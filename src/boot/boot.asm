@@ -44,7 +44,7 @@ main:
         call puts
         mov ah, 0
         int 0x16
-        jmp 0xFFFF:0x0000
+        int 0x19
         cli
         hlt
     mov si, stage2_fail
