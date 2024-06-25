@@ -1,5 +1,6 @@
 [BITS 16]
 
+; https://osdev.wiki/wiki/A20_Line#Final_code_example
 ;		ax - state (0 - disabled, 1 - enabled)
 check_a20:
 	pushf
