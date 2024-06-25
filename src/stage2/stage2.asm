@@ -20,16 +20,20 @@ puts:
     ret
 
 main:
+    ; set up video mode
     mov ah, 0x00
     mov al, 0x03
     int 0x10
-
+    ; clear screen
     xor al, al
     mov ah, 0x06
     mov bh, 0x0F
     xor cx, cx
-    mov dx, 0x184F
+    mov dx, 0xFFFF
     int 10h
+
+    mov si, stage2_loaded
+    call puts
 
     call check_a20
     cmp al, 0
@@ -50,6 +54,7 @@ main:
     call puts
 
 
+stage2_loaded                   db  "Stage 2 loaded", ENDL, 0
 loading_kernel                  db  "Loading kernel...", ENDL, 0
 kernel_not_implemented          db  "kernel not implemented!", ENDL, "Press any key to reboot...", 0
 a_20_on                         db  "A20 is ON", ENDL, 0

@@ -24,6 +24,39 @@ puts:
     .done:
         ret
 
+; idk if it works
+; ax - lba
+lba_to_chs:
+    push ax
+    push dx
+    mov dl, 0x80
+    _v_number_of_heads      dw 0x0000
+    _v_number_of_cylinders  dw 0x0000
+    _v_sectors_per_track    dw 0x0000
+    ; get some parameters for the disk first
+    mov ah, 0x08
+    int 0x13
+    mov [_v_number_of_heads], dh
+    mov [_v_sectors_per_track], cl
+    mov [_v_number_of_cylinders], ch
+    xor dx, dx
+    div word [_v_sectors_per_track] ; ax = LBA / sectors per track = temp
+                                  ; dx = LBA % sectors per track = sector
+    inc dx ; Sector
+    mov cx, dx
+    
+    xor dx, dx
+    div word [_v_number_of_heads]  ; ax = LBA / number of heads = cylinder
+                                 ; dx = LBA % number of heads = heads
+    mov dh, dl
+    mov ch, al
+    shl ah, 6
+    or cl, ah
+    pop ax
+    mov al, al
+    pop dx
+    ret
+
 
 main:
     mov si, msg
