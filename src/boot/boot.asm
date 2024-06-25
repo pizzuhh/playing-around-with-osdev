@@ -31,13 +31,13 @@ main:
     mov ch, 0x00 ; cilynder 
     mov cl, 0x02 ; sector
     mov dh, 0x00 ; head
-    mov dl, 0x80 ; drive (using floppy so the 1st floppy should be good?)
+    mov dl, 0x80 ; drive
     xor bx, bx
     mov es, bx
     mov bx, 0x7e00 ; put the contnets to 0x7e00
     int 0x13
-    jc .disk_read_err ; doesn't execute 
-    jmp 0x0000:0x7e00 ; juump but no output ;-;
+    jc .disk_read_err
+    jmp 0x0000:0x7e00
     
     .disk_read_err:
         mov si, disk_error

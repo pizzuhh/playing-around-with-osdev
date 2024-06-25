@@ -5,7 +5,7 @@
 
 _start:
     jmp main
-%include "/home/pizza/projects/assembly/boot/src/stage2/checka20.inc"
+%include "./src/stage2/checka20.inc"
 puts:
     mov bh, 0
     mov ah, 0x0E
@@ -30,7 +30,7 @@ main:
     xor cx, cx
     mov dx, 0x184F
     int 10h
-
+    
     call check_a20
     cmp al, 0
     jz .no_a20
