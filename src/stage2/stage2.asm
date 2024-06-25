@@ -30,14 +30,19 @@ main:
     xor cx, cx
     mov dx, 0x184F
     int 10h
-    
+
     call check_a20
     cmp al, 0
     jz .no_a20
     mov si, a_20_on
     call puts
-    mov si, msg
+    mov si, loading_kernel
     call puts
+    mov si, kernel_not_implemented
+    call puts
+    xor ax, ax
+    int 0x16
+    jmp 0xFFFF:0
     cli
     hlt
 .no_a20:
@@ -45,7 +50,8 @@ main:
     call puts
 
 
-msg         db  "Loading kernel...", ENDL, 0
-a_20_on     db  "A20 is ON", ENDL, 0
-a_20_off     db  "A20 is OFF", ENDL, 0
-read_error_msg db "Disk read error", ENDL, 0
+loading_kernel                  db  "Loading kernel...", ENDL, 0
+kernel_not_implemented          db  "kernel not implemented!", ENDL, "Press any key to reboot...", 0
+a_20_on                         db  "A20 is ON", ENDL, 0
+a_20_off                        db  "A20 is OFF", ENDL, 0
+read_error_msg                  db "Disk read error", ENDL, 0

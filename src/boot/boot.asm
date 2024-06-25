@@ -23,6 +23,8 @@ puts:
 
     .done:
         ret
+
+
 main:
     mov si, msg
     call puts
@@ -31,7 +33,7 @@ main:
     mov ch, 0x00 ; cilynder 
     mov cl, 0x02 ; sector
     mov dh, 0x00 ; head
-    mov dl, 0x80 ; drive
+    mov dl, 0x80 ; drive  
     xor bx, bx
     mov es, bx
     mov bx, 0x7e00 ; put the contnets to 0x7e00
