@@ -96,14 +96,14 @@ puts_pm:
     pop ebp
     ret
 
+
 pmain:
-    mov ah, 0x4F
+    mov ah, 0x0C
     mov esi, msg_cat
     call puts_pm
     jmp halt
 
-msg_cat: db "This is now the region of the C-A-T.", 0
+msg_cat: db "Protected mode discovered! No C yet >=<", 0
 
-
-times 510-($-$$) db 0x00
+times 510-($-$$) db 0xFF
 dw 0xAAFF ; not necesery but mark the end of this sector
