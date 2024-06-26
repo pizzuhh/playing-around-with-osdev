@@ -66,7 +66,7 @@ main:
     mov ch, 0x00 ; cilynder 
     mov cl, 0x02 ; sector
     mov dh, 0x00 ; head
-    mov dl, 0x80 ; drive  
+    ; mov dl, 0x80 ; drive  
     xor bx, bx
     mov es, bx
     mov bx, 0x7e00 ; put the contnets to 0x7e00
@@ -89,7 +89,7 @@ main:
 
 ; vars
 msg     db "Loading stage 2...", 0
-disk_error db ENDL, "Disk Read Error! Press any key to reboot...", 0
+disk_error db ENDL, "Disk Read Error! Press any key to reboot...", ENDL, 0
 stage2_fail db "Cloud not load stage2!", ENDL, 0
 times 510-($-$$) db 0
 dw 0xaa55
