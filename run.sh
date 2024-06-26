@@ -1,3 +1,3 @@
 #!/bin/bash
 make
-qemu-system-i386 -hda disk.img
+qemu-system-x86_64 -hda disk.img
