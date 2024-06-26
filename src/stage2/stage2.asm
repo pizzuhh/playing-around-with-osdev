@@ -48,6 +48,11 @@ _GDT:
     dd GDT_start
 
 main:
+    mov ah, 0x00
+    mov al, 0x03
+    int 0x10
+    ; mov si, msg_1
+    ; call puts
     cli
     lgdt [_GDT]
     mov eax, cr0
@@ -55,8 +60,13 @@ main:
     mov cr0, eax
     jmp 08h:prot_start
 
+
+; msg_1:  db "Stage 2 loaded...", ENDL, "Last interupt before protected mode :D", ENDL, 0
+
+
 [BITS 32]
 prot_start:
+    ; setup the stack and stuff
     mov ax, 0x10
     mov ds, ax
     mov es, ax
@@ -64,8 +74,36 @@ prot_start:
     mov gs, ax
     mov ss, ax
     mov esp, 0x90000
-    mov al, 'X'
-    mov ah, 0x0F
-    mov [0xB8000], ax
+    jmp pmain
+
+; esi - string
+; ah  - color
+puts_pm:
+    push ebp
+    push ebx
+    mov ebp, esp
+    mov ebx, 0xB8000
+.print_next_char:
+    mov al, [esi]
+    cmp al, 0
+    jz .end_puts
+    mov [ebx], eax
+    add ebx, 2
+    inc esi
+    jmp .print_next_char
+.end_puts:
+    pop ebx
+    pop ebp
+    ret
+
+pmain:
+    mov ah, 0x4F
+    mov esi, msg_cat
+    call puts_pm
     jmp halt
 
+msg_cat: db "This is now the region of the C-A-T.", 0
+
+
+times 510-($-$$) db 0x00
+dw 0xAAFF ; not necesery but mark the end of this sector

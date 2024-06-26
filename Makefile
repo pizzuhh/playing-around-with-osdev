@@ -30,8 +30,9 @@ $(DISK_FILE): $(BOOT_BIN) $(STAGE2_BIN)
 $(BOOTDIR)/%.bin: $(BOOTDIR)/%.asm
 	$(ASM) $(ASMFLAGS) -o $@ $<
 
-$(STAGE2DIR)/%.bin: $(STAGE2DIR)/%.asm
+$(STAGE2DIR)/%.bin: $(STAGE2DIR)/%.asm 
 	$(ASM) $(ASMFLAGS) -o $@ $<
+	
 
 clean:
 	rm -f $(BOOT_BIN) $(STAGE2_BIN) $(DISK_FILE)
