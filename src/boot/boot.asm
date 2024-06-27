@@ -56,9 +56,9 @@ main:
     mov ch, 0x00
     mov cl, 0x02
     mov dh, 0x00
-    xor bx, bx
+    mov bx, 0x2000
     mov es, bx
-    mov bx, 0x7e00
+    xor bx, bx
     int 0x13
     ; set new video mode; clear screen
     mov ah, 0x00
@@ -77,6 +77,14 @@ main:
 
 [BITS 32]
 prot_start:
+    ; set up some registrers copied from old commit
+    mov ax, 0x10
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+    mov ss, ax
+    mov esp, 0x20000
     jmp pstart
 
 ; esi - string
@@ -101,10 +109,10 @@ puts_pm:
 
 
 pstart:
-    jmp 0x7e00
+    jmp 0x2000:0x0000
     hlt
 
-msg:    db  "meow", 0 ; test string 0_0
+msg:    db  "meow", 0
 
 times 510-($-$$) db 0
 dw 0xaa55
