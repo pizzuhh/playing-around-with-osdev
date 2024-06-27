@@ -60,7 +60,7 @@ main:
     mov es, bx
     mov bx, 0x7e00
     int 0x13
-
+    ; set new video mode; clear screen
     mov ah, 0x00
     mov al, 0x03
     int 0x10
@@ -104,7 +104,7 @@ pstart:
     jmp 0x7e00
     hlt
 
-msg:    db  "meow", 0
+msg:    db  "meow", 0 ; test string 0_0
 
 times 510-($-$$) db 0
 dw 0xaa55

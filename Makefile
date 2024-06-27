@@ -3,7 +3,6 @@ ASMFLAGS = -f bin
 CC = i686-elf-gcc
 CFLAGS = -ffreestanding -nostdlib -m32 -g
 LD = i686-elf-ld
-LDFLAGS = -T src/C/link.ld -m elf_i386
 
 SRC = ./src
 BOOTDIR = $(SRC)/boot
