@@ -1,20 +1,20 @@
 ENTRY(_kstart)
 SECTIONS {
-    . = 0x20000; /* Set the text section to start at address 0x20000 */
+    . = 0x20000; 
 
     .text : {
-        *(.text)        /* .text sections (code) */
+        *(.text)
     }
 
     .rodata : {
-        *(.rodata)      /* .rodata section (read-only data) */
+        *(.rodata)
     }
 
     .data : {
-        *(.data)        /* .data section (initialized data) */
+        *(.data)
     }
 
     .bss : {
-        *(.bss)         /* .bss section (zero-initialized data) */
+        *(.bss)
     }
 }

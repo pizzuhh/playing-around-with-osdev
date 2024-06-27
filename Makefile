@@ -33,7 +33,7 @@ $(BOOTDIR)/%.bin: $(BOOTDIR)/%.asm
 	$(ASM) $(ASMFLAGS) -o $@ $<
 
 $(KERNEL_BIN): $(K_COFILES) $(KERNELDIR)/loader.o
-	$(LD) -Ttext 0x7e00 $(SRC)/stage2/loader.o $(K_COFILES) -o $@ --oformat=binary
+	$(LD) -T $(SRC)/stage2/link.ld $(SRC)/stage2/loader.o $(K_COFILES) -o $@ --oformat=binary 
 
 $(K_COFILES): $(K_CFILES)
 	$(CC) $(CFLAGS) -c $< -o $@

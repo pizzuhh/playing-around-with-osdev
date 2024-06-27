@@ -56,15 +56,15 @@ main:
     mov ch, 0x00
     mov cl, 0x02
     mov dh, 0x00
-    xor bx, bx
+    mov bx, 0x2000
     mov es, bx
-    mov bx, 0x7e00
+    xor bx, bx
     int 0x13
     ; set new video mode; clear screen
     mov ah, 0x00
     mov al, 0x03
     int 0x10
-
+    
     cli
     lgdt [_GDT]
     mov eax, cr0
@@ -109,7 +109,7 @@ puts_pm:
 
 
 pstart:
-    jmp 0x7e00
+    jmp 0x20000
     hlt
 
 msg:    db  "meow", 0
