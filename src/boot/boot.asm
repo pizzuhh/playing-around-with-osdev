@@ -24,72 +24,87 @@ puts:
     .done:
         ret
 
-; idk if it works
-; ax - lba
-lba_to_chs:
-    push ax
-    push dx
-    mov dl, 0x80
-    _v_number_of_heads      dw 0x0000
-    _v_number_of_cylinders  dw 0x0000
-    _v_sectors_per_track    dw 0x0000
-    ; get some parameters for the disk first
-    mov ah, 0x08
-    int 0x13
-    mov [_v_number_of_heads], dh
-    mov [_v_sectors_per_track], cl
-    mov [_v_number_of_cylinders], ch
-    xor dx, dx
-    div word [_v_sectors_per_track] ; ax = LBA / sectors per track = temp
-                                  ; dx = LBA % sectors per track = sector
-    inc dx ; Sector
-    mov cx, dx
-    
-    xor dx, dx
-    div word [_v_number_of_heads]  ; ax = LBA / number of heads = cylinder
-                                 ; dx = LBA % number of heads = heads
-    mov dh, dl
-    mov ch, al
-    shl ah, 6
-    or cl, ah
-    pop ax
-    mov al, al
-    pop dx
-    ret
+GDT_start:
+    null_segment: 
+        dd 0
+        dd 0
+    code_segment:
+        dw 0xFFFF
+        dw 0x0
+        db 0x0
+        db 10011010b
+        db 11001111b
+        db 0
+    data_segment:
+        dw 0xFFFF
+        dw 0x0
+        db 0x0
+        db 10010010b
+        db 11001111b
+        db 0
+GDT_end:
+
+_GDT:
+    dw GDT_end - GDT_start - 1
+    dd GDT_start
+
 
 
 main:
-    mov si, msg
-    call puts
-    mov ah, 0x02 ; read disk
-    mov al, 0x01 ; sectors to read
-    mov ch, 0x00 ; cilynder 
-    mov cl, 0x02 ; sector
-    mov dh, 0x00 ; head
-    ; mov dl, 0x80 ; drive  
+    mov ah, 0x02
+    mov al, 0x20
+    mov ch, 0x00
+    mov cl, 0x02
+    mov dh, 0x00
     xor bx, bx
     mov es, bx
-    mov bx, 0x7e00 ; put the contnets to 0x7e00
+    mov bx, 0x7e00
     int 0x13
-    jc .disk_read_err
-    jmp 0x0000:0x7e00
-    
-    .disk_read_err:
-        mov si, disk_error
-        call puts
-        mov ah, 0
-        int 0x16
-        int 0x19
-        cli
-        hlt
-    mov si, stage2_fail
-    call puts
+
+    mov ah, 0x00
+    mov al, 0x03
+    int 0x10
+
     cli
+    lgdt [_GDT]
+    mov eax, cr0
+    or eax, 1
+    mov cr0, eax
+    jmp 08h:prot_start
+
     hlt
 
-; vars
-msg     db "Loading stage 2...", 0
-disk_error db ENDL, "Disk Read Error! Press any key to reboot...", ENDL, 0
-stage2_fail db "Cloud not load stage2!", ENDL, 0
+
+[BITS 32]
+prot_start:
+    jmp pstart
+
+; esi - string
+; ah  - color
+puts_pm:
+    push ebp
+    push ebx
+    mov ebp, esp
+    mov ebx, 0xB8000
+.print_next_char:
+    mov al, [esi]
+    cmp al, 0
+    jz .end_puts
+    mov [ebx], eax
+    add ebx, 2
+    inc esi
+    jmp .print_next_char
+.end_puts:
+    pop ebx
+    pop ebp
+    ret
+
+
+pstart:
+    jmp 0x7e00
+    hlt
+
+msg:    db  "meow", 0
+
 times 510-($-$$) db 0
 dw 0xaa55
