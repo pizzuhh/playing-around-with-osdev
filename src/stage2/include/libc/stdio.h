@@ -58,3 +58,4 @@ void update_cursor(int x, int y);
 // https://stackoverflow.com/questions/1735236/how-to-write-my-own-printf-in-c
 char *convert(unsigned int num, int base);
 void printf(char *fmt, ...);
+void printe(const char *exception);

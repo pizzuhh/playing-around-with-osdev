@@ -155,3 +155,6 @@ char *convert(unsigned int num, int base)
 
     return(ptr); 
 }
+void printe(const char *exception) {
+    terminal_write(exception, strlen(exception), 0x0F);
+}

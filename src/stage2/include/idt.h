@@ -28,13 +28,12 @@ typedef struct {
 
 
 enum {
-    TRAP_GATE = 0x8E,
-    INTERRUPT_GATE = 0x8F
+    TRAP_GATE = 0x8F,
+    INTERRUPT_GATE = 0x8E
 } IDT_GATE_TYPE;
 
 __attribute__((interrupt)) void default_exception_handler(interrupt_frame *frame) {
-    volatile char *video_memory = (char*)0xB8000;
-    video_memory[0] = 'X'; // do something to verify it's working
+    printe("Unhandled exception has been encountered! Halting process!");
     halt;
 }
 
@@ -43,9 +42,9 @@ __attribute__((interrupt)) void default_exception_handler_err_code(interrupt_fra
 }
 
 __attribute__((interrupt)) void default_interrupt_handler(interrupt_frame *frame) {
+    printe("default_interrupt_handler() called");
     halt;
 }
-
 void set_idt_descriptor(uint8_t entry, void *isr, uint8_t flags) {
     idt_entry *idt_ent = &idt[entry];
     idt_ent->offset_low = (uint32_t)isr & 0xFFFF;
@@ -58,7 +57,7 @@ void set_idt_descriptor(uint8_t entry, void *isr, uint8_t flags) {
 void init_idt(void) {
     idtr.limit = (uint16_t)(sizeof(idt_entry)*256)-1;
     idtr.base = (uint32_t)&idt[0];
-    for (uint8_t entry; entry < 32; ++entry) {
+    for (uint8_t entry = 0; entry < 32; ++entry) {
         if (entry == 8 || entry == 10 || entry == 11 || entry == 12 
         || entry == 13 || entry == 14 || entry == 17 || entry == 21) {
             set_idt_descriptor(entry, default_exception_handler_err_code, TRAP_GATE);
@@ -67,11 +66,10 @@ void init_idt(void) {
         }
     }
 
-    for (uint8_t entry = 32; entry < 256; entry++) {
+    for (uint8_t entry = 32; entry < 255; entry++) {
         set_idt_descriptor(entry, default_interrupt_handler, INTERRUPT_GATE);
         
     }
-
     asm volatile ("lidt %0" : : "memory"(idtr));
     asm volatile ("sti");
 }
