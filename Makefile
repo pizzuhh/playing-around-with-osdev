@@ -7,7 +7,8 @@ LD = i686-elf-ld
 SRC = ./src
 BOOTDIR = $(SRC)/boot
 KERNELDIR = $(SRC)/stage2
-LIBCDIR = $(SRC)/stage2/libc
+INCLUDE_DIR = $(KERNELDIR)/include
+LIBCDIR = $(INCLUDE_DIR)/libc
 
 K_CFILES = $(wildcard $(KERNELDIR)/*.c)
 K_ASMFILES = $(wildcard $(KERNELDIR)/*.asm)
