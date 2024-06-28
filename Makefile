@@ -7,10 +7,13 @@ LD = i686-elf-ld
 SRC = ./src
 BOOTDIR = $(SRC)/boot
 KERNELDIR = $(SRC)/stage2
-
+LIBCDIR = $(SRC)/stage2/libc
 
 K_CFILES = $(wildcard $(KERNELDIR)/*.c)
 K_ASMFILES = $(wildcard $(KERNELDIR)/*.asm)
+
+LIBC_CFILES = $(wildcard $(LIBCDIR)/*.c)
+LIBC_OFILES = $(patsubst %.c, %.o, $(LIBC_CFILES))
 
 K_COFILES += $(patsubst %.c, %.o, $(K_CFILES))
 
@@ -32,11 +35,16 @@ $(DISK_FILE): $(BOOT_BIN) $(KERNEL_BIN)
 $(BOOTDIR)/%.bin: $(BOOTDIR)/%.asm
 	$(ASM) $(ASMFLAGS) -o $@ $<
 
-$(KERNEL_BIN): $(K_COFILES) $(KERNELDIR)/loader.o
-	$(LD) -T $(SRC)/stage2/link.ld $(SRC)/stage2/loader.o $(K_COFILES) -o $@ --oformat=binary 
+$(KERNEL_BIN): $(K_COFILES) $(KERNELDIR)/loader.o $(LIBC_OFILES)
+	$(LD) -T $(SRC)/stage2/link.ld $(SRC)/stage2/loader.o $(K_COFILES) $(LIBC_OFILES) -o $@ --oformat=binary 
+
+$(LIBCDIR)/%.o: $(LIBCDIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(K_COFILES): $(K_CFILES)
 	$(CC) $(CFLAGS) -c $< -o $@
+
+
 
 $(KERNELDIR)/loader.o: $(K_ASMFILES)
 	$(ASM) -f elf $< -o $@

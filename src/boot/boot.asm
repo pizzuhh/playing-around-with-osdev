@@ -52,7 +52,7 @@ _GDT:
 
 main:
     mov ah, 0x02
-    mov al, 0x20
+    mov al, 0x40
     mov ch, 0x00
     mov cl, 0x02
     mov dh, 0x00
