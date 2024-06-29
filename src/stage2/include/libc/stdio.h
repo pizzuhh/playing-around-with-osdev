@@ -1,7 +1,7 @@
 #pragma once
 #include "stdint.h"
 #include <stdarg.h>
-#include "../misc.h"
+#include "../io.h"
 
 // https://wiki.osdev.org/Bare_Bones#Writing_a_kernel_in_C
 enum vga_color {
