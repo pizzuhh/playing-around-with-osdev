@@ -52,9 +52,11 @@ $(KERNELDIR)/loader.o: $(K_ASMFILES)
 
 
 clean:
-	rm -f $(BOOT_BIN) $(STAGE2_BIN) $(DISK_FILE) $(KERNEL_BIN)
+	rm -f $(BOOT_BIN) $(STAGE2_BIN) $(DISK_FILE) $(KERNEL_BIN) $(LIBC_OFILES)
 
 run: $(DISK_FILE)
 	qemu-system-x86_64 -drive file=disk.img,format=raw
+runb: $(DISK_FILE)
+	bochs -f bochs_config_nodbg
 run-debug: $(DISK_FILE)
 	bochs -f bochs_config

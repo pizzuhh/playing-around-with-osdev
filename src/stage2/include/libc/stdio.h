@@ -1,7 +1,6 @@
 #pragma once
 #include "stdint.h"
 #include <stdarg.h>
-#include "../io.h"
 
 // https://wiki.osdev.org/Bare_Bones#Writing_a_kernel_in_C
 enum vga_color {
@@ -50,12 +49,7 @@ void terminal_writestring_color(const char* data, uint8_t color);
 void terminal_writestring(const char* data);
 
 
-
-__attribute__((no_caller_saved_registers)) void disable_cursor();
-void enable_cursor(uint8_t cursor_start, uint8_t cursor_end);
-void update_cursor(int x, int y);
-
 // https://stackoverflow.com/questions/1735236/how-to-write-my-own-printf-in-c
 char *convert(unsigned int num, int base);
-void printf(char *fmt, ...);
+void printf(const char *fmt, ...);
 void printe(const char *exception);

@@ -5,9 +5,8 @@
 #include "libc/stdint.h"
 #include "libc/stdio.h"
 
+int tick = 0;
 __attribute__((interrupt)) void timer_irq_handler(interrupt_frame *frame) {
-    uint32_t t = 0;
-    printf("Ticks: %d\n", t);
-    t++;
+    // TODO: Implement sleep later
     PIC_sendEOI(0);
 }

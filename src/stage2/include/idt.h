@@ -1,6 +1,7 @@
 #pragma once
 #include "libc/stdint.h"
 #include "libc/stdio.h"
+#include "./io.h"
 
 typedef struct {
     uint16_t    offset_low;
@@ -59,15 +60,15 @@ void init_idt(void) {
     idtr.base = (uint32_t)&idt[0];
     for (uint8_t entry = 0; entry < 32; ++entry) {
         if (entry == 8 || entry == 10 || entry == 11 || entry == 12 
-        || entry == 13 || entry == 14 || entry == 17 || entry == 21) {
-            set_idt_descriptor(entry, default_exception_handler_err_code, TRAP_GATE);
+        || entry == 13 || entry == 14 || entry == 17 || entry == 21) { // NOTE: The code compiles without casting but tell clangd to shut up because it generates error and that annoys me :(
+            set_idt_descriptor(entry, (void*)default_exception_handler_err_code, TRAP_GATE);
         } else {
-            set_idt_descriptor(entry, default_exception_handler, TRAP_GATE);
+            set_idt_descriptor(entry, (void*)default_exception_handler, TRAP_GATE);
         }
     }
 
     for (uint8_t entry = 32; entry < 255; entry++) {
-        set_idt_descriptor(entry, default_interrupt_handler, INTERRUPT_GATE);
+        set_idt_descriptor(entry, (void*)default_interrupt_handler, INTERRUPT_GATE);
         
     }
     asm volatile ("lidt %0" : : "memory"(idtr));

@@ -1,6 +1,7 @@
 #pragma once
 #include "./io.h"
 #include "./libc/stdint.h"
+#include "./libc/stdio.h"
 
 // https://wiki.osdev.org/PIC
 
@@ -24,30 +25,33 @@ void pic_disable(void) {
     outb(PIC2_DATA, 0xff);
 }
 
-void IRQ_set_mask(uint8_t irq) {
+void IRQ_set_mask(uint8_t IRQline) {
     uint16_t port;
     uint8_t value;
-    if (irq < 8) port = PIC1_DATA;
-    else {
+
+    if(IRQline < 8) {
+        port = PIC1_DATA;
+    } else {
         port = PIC2_DATA;
-        irq -= 8;
+        IRQline -= 8;
     }
-    value = inb(port) | (1 << irq);
-    outb(port, value);
+    value = inb(port) | (1 << IRQline);
+    outb(port, value);        
 }
 
-void IRQ_clear_mask(uint8_t irq) {
+void IRQ_clear_mask(uint8_t IRQline) {
     uint16_t port;
     uint8_t value;
-    if (irq < 8) port = PIC1_DATA;
-    else {
-        port = PIC2_DATA;
-        irq -= 8;
-    }
-    value = inb(port) & ~(1 << irq);
-    outb(port, value);
-}
 
+    if(IRQline < 8) {
+        port = PIC1_DATA;
+    } else {
+        port = PIC2_DATA;
+        IRQline -= 8;
+    }
+    value = inb(port) & ~(1 << IRQline);
+    outb(port, value);        
+}
 void remap_PIC(void) {
     uint8_t pic_1_mask, pic_2_mask;
     pic_1_mask = inb(PIC1_DATA);
