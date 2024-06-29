@@ -16,7 +16,6 @@ void _kstart() {
     IRQ_clear_mask(0);
     asm volatile ("sti");
     set_pit_mode_frequency(0, MODE2, 1193);
-    printd(500, "I am in your walls :3\n\n");
     for(;;);
     halt;
 }
