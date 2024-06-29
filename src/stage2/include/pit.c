@@ -1,5 +1,5 @@
 #include "pit.h"
-
+#include "libc/stdio.h"
 uint32_t sleep_counter = 0;
 int ticks = 0;
 
@@ -8,9 +8,13 @@ __attribute__((interrupt)) void timer_irq_handler(interrupt_frame *frame) {
     PIC_sendEOI(0);
 }
 
-void sleep(uint32_t ms) {
+void msleep(uint32_t ms) {
+    // Probably bad idea. Set the PIT to 1000Hz (1ms)
+    set_pit_mode_frequency(0, MODE2, 1193); 
+    asm volatile ("cli"); // Disable interrupts. We don't want to interrupt the sleep.
     sleep_counter = ms;
-    while (sleep_counter > 0) asm volatile ("nop");
+    while (sleep_counter > 0) asm volatile ("sti;hlt;cli");
+    set_pit_mode_frequency(0, MODE2, pit_freq); // set back the original frequency
     asm volatile ("sti");
     return;
 }

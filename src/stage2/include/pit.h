@@ -5,6 +5,8 @@
 #include "./idt.h"
 #include "libc/stdint.h"
 
+extern uint16_t pit_freq;
+
 extern uint32_t sleep_counter;
 
 #define PIT_CHANNEL0    0x40 // IRQ0 clock stuff
@@ -16,7 +18,7 @@ extern int ticks;
 
 __attribute__((interrupt)) void timer_irq_handler(interrupt_frame *frame);
 
-void sleep(uint32_t ms);
+void msleep(uint32_t ms);
 
 // PIT modes
 #define MODE0 0b000 // interrupt on terminal count

@@ -155,7 +155,7 @@ void printd(uint32_t delay, const char *msg) {
 		terminal_putchar(*msg, terminal_color);
 		update_cursor(terminal_column, terminal_row);
 		msg++;
-		sleep(delay);
+		msleep(delay);
 	}
 	
 }
