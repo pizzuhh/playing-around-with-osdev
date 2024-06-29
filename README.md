@@ -8,3 +8,12 @@ Tools:
 
 [bochs](https://bochs.sourceforge.io/) - for debugging 
 
+Resources:
+Resources that help(ed) me learn:
+
+[Queso Fuego](https://www.youtube.com/@QuesoFuego)
+
+[osdev.org](https://wiki.osdev.org)
+
+And others I forgot
+
