@@ -36,7 +36,6 @@ $(DISK_FILE): $(BOOT_BIN) $(KERNEL_BIN)
 	@dd if=/dev/zero of=$@ bs=512 count=100
 	@dd if=./src/boot/boot.bin of=$@ conv=notrunc
 	@dd if=$(KERNEL_BIN) of=$@ conv=notrunc seek=1
-	#@$(MAKE) cleanup
 
 $(BOOTDIR)/%.bin: $(BOOTDIR)/%.asm
 	@echo "ASM $<"

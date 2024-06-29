@@ -1,5 +1,4 @@
 #include "stdio.h"
-#include <cstdint>
 #include <stdarg.h>
 
 size_t terminal_row;
