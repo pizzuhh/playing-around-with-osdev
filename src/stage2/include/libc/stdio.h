@@ -1,5 +1,7 @@
-#pragma once
+#ifndef STDIO_H
+#define STDIO_H
 #include "stdint.h"
+#include "../pit.h"
 #include <stdarg.h>
 
 // https://wiki.osdev.org/Bare_Bones#Writing_a_kernel_in_C
@@ -39,6 +41,7 @@ extern size_t terminal_row;
 extern size_t terminal_column;
 extern uint8_t terminal_color;
 extern uint16_t* terminal_buffer;
+extern uint8_t* frame_buffer;
 
 void terminal_initialize(uint8_t color);
 void terminal_setcolor(uint8_t color);
@@ -53,3 +56,9 @@ void terminal_writestring(const char* data);
 char *convert(unsigned int num, int base);
 void printf(const char *fmt, ...);
 void printe(const char *exception);
+void printd(uint32_t delay, const char *msg);
+
+void disable_cursor();
+void enable_cursor(uint8_t cursor_start, uint8_t cursor_end);
+void update_cursor(int x, int y);
+#endif

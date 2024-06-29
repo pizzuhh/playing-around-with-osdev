@@ -51,6 +51,7 @@ _GDT:
 
 
 main:
+    ; read the disk
     mov ah, 0x02
     mov al, 0x40
     mov ch, 0x00
@@ -115,4 +116,4 @@ pstart:
 msg:    db  "meow", 0
 
 times 510-($-$$) db 0
-dw 0xaa55
+dw 0xAA55

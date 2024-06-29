@@ -1,4 +1,5 @@
 #include "stdio.h"
+#include <cstdint>
 #include <stdarg.h>
 
 size_t terminal_row;
@@ -49,19 +50,20 @@ void terminal_putentryat(char c, uint8_t color, size_t col, size_t row)
 {
 	const size_t index = row * VGA_WIDTH + col;
 	terminal_buffer[index] = vga_entry(c, color);
+	
 }
 
 void terminal_putchar(char c, uint8_t color) 
 {
+	if (terminal_row >= VGA_HEIGHT) {
+		terminal_clear();
+	}
     if (c == '\n') {
         terminal_row++;
         terminal_column = 0;
         return;
     }
 	// go back to top if we reach end
-	if (terminal_row >= VGA_HEIGHT) {
-		terminal_clear();
-	}
     terminal_putentryat(c, color, terminal_column, terminal_row);
     if (++terminal_column == VGA_WIDTH) {
         terminal_column = 0;
@@ -86,11 +88,8 @@ void terminal_writestring_color(const char* data, uint8_t color)
 void terminal_writestring(const char* data) 
 {
 	terminal_write(data, strlen(data), terminal_color);
+	update_cursor(terminal_column, terminal_row);
 }
-
-
-
-
 
 void printf(const char *fmt, ...) {
 	va_list list;
@@ -129,6 +128,7 @@ void printf(const char *fmt, ...) {
 		fmt++;
 	}
 	va_end(list);
+	update_cursor(terminal_column, terminal_row);
 }
 
 char *convert(unsigned int num, int base) 
@@ -150,4 +150,36 @@ char *convert(unsigned int num, int base)
 }
 void printe(const char *exception) {
     terminal_write(exception, strlen(exception), 0x0F);
+}
+void printd(uint32_t delay, const char *msg) {
+	while (*msg) {
+		terminal_putchar(*msg, terminal_color);
+		update_cursor(terminal_column, terminal_row);
+		msg++;
+		sleep(delay);
+	}
+	
+}
+
+void disable_cursor()
+{
+	outb(0x3D4, 0x0A);
+	outb(0x3D5, 0x20);
+}
+void enable_cursor(uint8_t cursor_start, uint8_t cursor_end)
+{
+	outb(0x3D4, 0x0A);
+	outb(0x3D5, (inb(0x3D5) & 0xC0) | cursor_start);
+
+	outb(0x3D4, 0x0B);
+	outb(0x3D5, (inb(0x3D5) & 0xE0) | cursor_end);
+}
+void update_cursor(int x, int y)
+{
+	uint16_t pos = y * VGA_WIDTH + x;
+
+	outb(0x3D4, 0x0F);
+	outb(0x3D5, (uint8_t) (pos & 0xFF));
+	outb(0x3D4, 0x0E);
+	outb(0x3D5, (uint8_t) ((pos >> 8) & 0xFF));
 }
