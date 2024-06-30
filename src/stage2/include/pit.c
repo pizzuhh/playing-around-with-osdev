@@ -30,3 +30,22 @@ void set_pit_mode_frequency(const uint8_t channel, const uint8_t mode, const uin
     asm volatile ("sti");
 
 }
+
+void StartSound(unsigned int Frequency)
+{
+	unsigned int Divisor = 1193180 / Frequency;
+    set_pit_mode_frequency(2, MODE3, Divisor);
+	outb(0x61, inb(0x61) | 3);
+}
+
+void StopSound()
+{
+	outb(0x61, inb(0x61) & ~3);
+}
+
+void beep(unsigned int Frequency, unsigned int Duration)
+{
+	StartSound(Frequency);
+	msleep(Duration);
+	StopSound();
+}

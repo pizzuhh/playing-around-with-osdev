@@ -30,4 +30,9 @@ void msleep(uint32_t ms);
 
 /*The PIT runs at (roughly) 1.193182 MHz*/
 void set_pit_mode_frequency(const uint8_t channel, const uint8_t mode, const uint16_t freq);
+
+/* PC speaker */
+void StartSound(unsigned int Frequency);
+void StopSound();
+void beep(unsigned int Frequency, unsigned int Duration);
 #endif
