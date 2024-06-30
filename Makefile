@@ -1,7 +1,7 @@
 ASM = nasm
 ASMFLAGS = -f bin
 CC = i686-elf-gcc
-CFLAGS = -ffreestanding -nostdlib -m32 -g -mgeneral-regs-only
+CFLAGS = -ffreestanding -nostdlib -m32 -g -mgeneral-regs-only -I./src/stage2/include
 LD = i686-elf-ld
 
 SRC = ./src
@@ -21,6 +21,10 @@ LIBC_OFILES = $(patsubst %.c, %.o, $(LIBC_CFILES))
 I_CFILES = $(wildcard $(INCLUDE_DIR)/*.c)
 I_OFILES = $(patsubst %.c, %.o, $(I_CFILES))
 
+DRIVER_DIR = $(SRC)/stage2/drivers
+D_CFILES = $(wildcard $(DRIVER_DIR)/*.c)
+D_OFILES = $(patsubst %.c, %.o, $(D_CFILES))
+
 BOOT_SRC = $(wildcard $(BOOTDIR)/*.asm)
 BOOT_BIN = $(patsubst %.asm, %.bin, $(BOOT_SRC))
 KERNEL_BIN = $(SRC)/stage2/kernel.bin
@@ -33,7 +37,7 @@ all: $(DISK_FILE)
 
 $(DISK_FILE): $(BOOT_BIN) $(KERNEL_BIN)
 	@echo "Generating disk.img file..."
-	@dd if=/dev/zero of=$@ bs=512 count=100
+	@dd if=/dev/zero of=$@ bs=512 count=41
 	@dd if=./src/boot/boot.bin of=$@ conv=notrunc
 	@dd if=$(KERNEL_BIN) of=$@ conv=notrunc seek=1
 
@@ -41,9 +45,9 @@ $(BOOTDIR)/%.bin: $(BOOTDIR)/%.asm
 	@echo "ASM $<"
 	@$(ASM) $(ASMFLAGS) -o $@ $<
 
-$(KERNEL_BIN): $(K_OFILES) $(KERNELDIR)/loader.o $(LIBC_OFILES) $(I_OFILES)
+$(KERNEL_BIN): $(K_OFILES) $(KERNELDIR)/loader.o $(LIBC_OFILES) $(I_OFILES) $(D_OFILES)
 	@echo "LD $<"
-	@$(LD) -T $(SRC)/stage2/link.ld $(KERNELDIR)/loader.o $(K_OFILES) $(LIBC_OFILES) $(I_OFILES) -o $@ --oformat=binary 
+	@$(LD) -T $(SRC)/stage2/link.ld $(KERNELDIR)/loader.o $(K_OFILES) $(LIBC_OFILES) $(I_OFILES) $(D_OFILES) -o $@ --oformat=binary 
 
 $(LIBCDIR)/%.o: $(LIBCDIR)/%.c
 	@echo "CC $<"
@@ -61,6 +65,10 @@ $(KERNELDIR)/loader.o: $(K_ASMFILES)
 	@echo "ASM $<"
 	@$(ASM) -f elf $< -o $@
 
+$(DRIVER_DIR)/%.o: $(DRIVER_DIR)/%.c
+	@echo "CC $<"
+	@$(CC) $(CFLAGS) -c $< -o $@
+
 clean:
 	@echo "Clean up..."
 	@rm -f $(BOOT_BIN) $(DISK_FILE) $(KERNEL_BIN) $(LIBC_OFILES) $(K_OFILES) $(I_OFILES) $(KERNELDIR)/loader.o
@@ -70,7 +78,7 @@ cleanup:
 	rm -f $(BOOT_BIN) $(KERNEL_BIN) $(LIBC_OFILES) $(K_OFILES) $(I_OFILES) $(KERNELDIR)/loader.o
 
 run: $(DISK_FILE)
-	qemu-system-x86_64 -drive file=disk.img,format=raw
+	qemu-system-x86_64 -drive file=disk.img,format=raw -audiodev pa,id=speaker -machine pcspk-audiodev=speaker
 
 runb: $(DISK_FILE)
 	bochs -f bochs_config_nodbg
