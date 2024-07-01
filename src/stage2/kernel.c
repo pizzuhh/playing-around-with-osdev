@@ -25,7 +25,7 @@ void _kstart() {
     set_pit_mode_frequency(0, MODE2, pit_freq);    
     printf("Kernel\n");
     for(;;) {
-        printf(">: ");
+        printf("> ");
         char *c = get_input();
         if (!strcmp(c, "beep")) {
             beep(1000, 69000);
