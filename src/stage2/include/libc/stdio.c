@@ -6,13 +6,7 @@ size_t terminal_column;
 uint8_t terminal_color;
 uint16_t* terminal_buffer;
 
-size_t strlen(const char* str) 
-{
-	size_t len = 0;
-	while (str[len])
-		len++;
-	return len;
-}
+
 
 
 void terminal_initialize(uint8_t color) 
@@ -49,7 +43,7 @@ void terminal_putentryat(char c, uint8_t color, size_t col, size_t row)
 {
 	const size_t index = row * VGA_WIDTH + col;
 	terminal_buffer[index] = vga_entry(c, color);
-	
+	update_cursor(terminal_column, terminal_row);
 }
 
 void terminal_putchar(char c, uint8_t color) 
@@ -60,6 +54,7 @@ void terminal_putchar(char c, uint8_t color)
     if (c == '\n') {
         terminal_row++;
         terminal_column = 0;
+		update_cursor(terminal_column, terminal_row);
         return;
     }
 	// go back to top if we reach end
@@ -70,6 +65,7 @@ void terminal_putchar(char c, uint8_t color)
             terminal_row = 0;
         }
     }
+	update_cursor(terminal_column, terminal_row);
 }
 
 
@@ -104,7 +100,6 @@ void printf(const char *fmt, ...) {
 					break;
 				case 'c':
 					arg_i = va_arg(list, int);
-					terminal_putchar(arg_i, terminal_color);
                     break;
 				case 's':
 					arg_s = va_arg(list, char*);

@@ -1,10 +1,12 @@
 #include "include/libc/stdint.h"
 #include "include/libc/stdio.h"
+#include "include/libc/string.h"
 #include "include/idt.h"
 #include "include/exceptions.h"
 #include "include/pic.h"
 #include "include/pit.h"
 #include "drivers/keyboard.h"
+
 
 uint16_t pit_freq = 0;
 
@@ -20,7 +22,18 @@ void _kstart() {
     IRQ_clear_mask(0);
     IRQ_clear_mask(1);
     asm volatile ("sti");
-    set_pit_mode_frequency(0, MODE2, pit_freq);
-    for(;;);
+    set_pit_mode_frequency(0, MODE2, pit_freq);    
+    printf("Kernel\n");
+    for(;;) {
+        printf(">: ");
+        char *c = get_input();
+        if (!strcmp(c, "beep")) {
+            beep(1000, 69000);
+        } else if (!strcmp(c, "dog")) {
+            printf("CAT\n");
+        } else if (!strcmp(c, "help")) {
+            printf("beep - beeps for 69 seconds\ndog - prints cat\nhelp - prints this menu\n");
+        }
+    }
     halt;
 }
