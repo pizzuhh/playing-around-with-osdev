@@ -1,3 +1,4 @@
+#include "drivers/ata.h"
 #include "include/libc/stdint.h"
 #include "include/libc/stdio.h"
 #include "include/libc/string.h"
@@ -28,11 +29,14 @@ void _kstart() {
         printf("> ");
         char *c = get_input();
         if (!strcmp(c, "beep")) {
-            beep(1000, 69000);
+            beep(1000, 10000);
         } else if (!strcmp(c, "dog")) {
             printf("CAT\n");
+            uint16_t d[256*40];
+            memset(&d, 0x00, 256*40);
+            ata_write_sector(1, 40, d);
         } else if (!strcmp(c, "help")) {
-            printf("beep - beeps for 69 seconds\ndog - prints cat\nhelp - prints this menu\n");
+            printf("beep - play beep\ndog - prints cat(tests ata_write_sector() which erases the kernel)\nhelp - prints this menu\n");
         }
     }
     halt;

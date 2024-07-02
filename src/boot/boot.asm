@@ -51,7 +51,13 @@ _GDT:
 
 
 main:
+     ; set new video mode; clear screen
+    mov ah, 0x00
+    mov al, 0x03
+    int 0x10
+    
     ; read the disk
+    cld
     mov ah, 0x02
     mov al, 0x40
     mov ch, 0x00
@@ -61,11 +67,7 @@ main:
     mov es, bx
     xor bx, bx
     int 0x13
-    ; set new video mode; clear screen
-    mov ah, 0x00
-    mov al, 0x03
-    int 0x10
-    
+    ;jc .disk_error
     cli
     lgdt [_GDT]
     mov eax, cr0
@@ -74,7 +76,11 @@ main:
     jmp 08h:prot_start
 
     hlt
-
+.disk_error:
+    mov si, dsk_read_error
+    call puts
+    cli
+    hlt
 
 [BITS 32]
 prot_start:
@@ -113,7 +119,7 @@ pstart:
     jmp 0x20000
     hlt
 
-msg:    db  "meow", 0
+dsk_read_error:    db  "Disk Read failed :(", 0
 
 times 510-($-$$) db 0
 dw 0xAA55
