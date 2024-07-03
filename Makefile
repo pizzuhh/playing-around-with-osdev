@@ -37,7 +37,7 @@ all: $(DISK_FILE)
 
 $(DISK_FILE): $(BOOT_BIN) $(KERNEL_BIN)
 	@echo "Generating disk.img file..."
-	@dd if=/dev/zero of=$@ bs=512 count=41
+	@dd if=/dev/zero of=$@ bs=512 count=3
 	@dd if=./src/boot/boot.bin of=$@ conv=notrunc
 	@dd if=$(KERNEL_BIN) of=$@ conv=notrunc seek=1
 
