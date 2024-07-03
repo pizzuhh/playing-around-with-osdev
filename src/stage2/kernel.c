@@ -8,7 +8,7 @@
 #include "include/pic.h"
 #include "include/pit.h"
 #include "drivers/keyboard.h"
-
+#include "include/rtc.h"
 
 uint16_t pit_freq = 0;
 
@@ -20,12 +20,16 @@ void _kstart() {
     pic_disable();
     remap_PIC();
     set_idt_descriptor(0x20, timer_irq_handler, INTERRUPT_GATE); // PIT
-    set_idt_descriptor(0x21, kbd_handler, INTERRUPT_GATE); // TODO: implement the driver for: PS/2 keyboard 
+    set_idt_descriptor(0x21, kbd_handler, INTERRUPT_GATE);
+    set_idt_descriptor(0x28, rtc_handler, INTERRUPT_GATE);
     IRQ_clear_mask(0);
     IRQ_clear_mask(1);
+    IRQ_clear_mask(2); // PIC2
+    IRQ_clear_mask(8); // RTC
     asm volatile ("sti");
+    enable_rtc();
     set_pit_mode_frequency(0, MODE2, pit_freq);    
-    printf("Kernel\nRun `help` for a list of commands\n");
+    printf("Welcome to the kernel of this\nRun `help` for a list of commands\n");
     for(;;) {
         printf("> ");
         char *c = get_input();
@@ -80,6 +84,8 @@ void _kstart() {
             beep(392, bpm/8);
             beep(440, bpm/8);
         }
+        } else if (!strcmp(c, "time")){
+            printf("%h-%h-%hT%h:%h:%h\n", global_time.year, global_time.month, global_time.day, global_time.hours, global_time.minutes, global_time.seconds);
 
         } else if (!strcmp(c, "dog")) {
             printf("CAT\n");
@@ -90,10 +96,12 @@ void _kstart() {
             ata_write_sector(1, 3, d);
             ata_write_sector(4, 2, d);
         } else if (!strcmp(c, "help")) {
-            printf("beep - play beep\ndog - prints cat(tests ata_write_sector() which erases the kernel)\nhelp - prints this menu\n");
+            printf("beep - play beep\ndog - prints cat(tests ata_write_sector() which erases the kernel)\nhelp - prints this menu\ntime - displays the current RTC time. The timezone is (probably) UTC\n");
+        } else {
+            printf("Invalid command\n");
         }
     }
     
-    
+    // for(;;);
     halt;
 }

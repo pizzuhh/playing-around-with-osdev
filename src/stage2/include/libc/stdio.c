@@ -91,6 +91,7 @@ void printf(const char *fmt, ...) {
 	va_start(list, fmt);
 	int arg_i = 0;
 	char *arg_s;
+	short arg_sh;
 	while (*fmt) {
 		if (*fmt == '%') {
 			fmt++;
@@ -113,6 +114,9 @@ void printf(const char *fmt, ...) {
 				case 'X':
 					arg_i = va_arg(list, int);
 					terminal_writestring(convert(arg_i, 16));
+				case 'h':
+					arg_i = va_arg(list, int);
+					terminal_writestring(convert(arg_i, 10));
 				default:
 					break;
 			}

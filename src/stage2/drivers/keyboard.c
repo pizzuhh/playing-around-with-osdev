@@ -8,7 +8,7 @@ char *__num = "123456789";
 
 char last_pressed_key = '\0';
 char keycache[256];
-
+uint8_t kci = 0;
 
 void put_kb(uint8_t key) {
     if (key == SQ_BRACKETO_PRESSED) {
@@ -23,6 +23,7 @@ void put_kb(uint8_t key) {
     } else if (key == BACKSPACE_PRESSED) {
         // TODO: Make this better
         terminal_putentryat(' ', terminal_color, (terminal_column > 0) ? --terminal_column : --terminal_row, terminal_row);
+        keycache[kci--] = '\0'; // update the keycache so we get valid input if we ask the user
     } else if (key == SEMICOLON_PRESSED) {
         terminal_putchar(';', terminal_color);
         last_pressed_key = ';';
@@ -82,7 +83,7 @@ void put_kb(uint8_t key) {
     }
 }
 
-uint8_t kci = 0;
+
 __attribute__((interrupt)) void kbd_handler(interrupt_frame *frame) {
     uint8_t code = inb(0x60);
     put_kb(code);
@@ -92,7 +93,7 @@ __attribute__((interrupt)) void kbd_handler(interrupt_frame *frame) {
         kci++;
         last_pressed_key = '\0';
     }
-    PIC_sendEOI(0);
+    PIC_sendEOI(1);
 }
 
 
