@@ -17,5 +17,6 @@
 #define ATA_COMMAND         (ATA_DATA + 7) // R/W
 
 void ata_write_sector(uint32_t lba, uint8_t sectorct, uint16_t *data);
+void ata_read_sector(uint32_t lba, uint8_t sectorct, uint16_t *data);
 
 #endif

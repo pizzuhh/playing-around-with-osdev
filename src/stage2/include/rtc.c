@@ -1,6 +1,7 @@
 #include "./rtc.h"
 #include "libc/stdio.h"
 #include "pic.h"
+#include <stdint.h>
 
 datetime_t global_time = {0};
 
@@ -60,4 +61,9 @@ void enable_rtc(void) {
     outb(CMOS_CONTROL, 0x8B);
     outb(CMOS_DATA, prev_regB | 0x40);
     get_rtc_reg(0x0C);
+}
+
+void print_time(void) {
+    uint16_t yr = 2000 + global_time.year;
+    printf("%d-%d-%dT%d:%d:%d\n", yr, global_time.month, global_time.day, global_time.hours, global_time.minutes, global_time.seconds);
 }

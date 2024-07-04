@@ -32,7 +32,7 @@ static uint8_t get_rtc_reg(uint16_t reg) {
 }
 
 void enable_rtc(void);
-
+void print_time(void);
 __attribute__((interrupt)) void rtc_handler(interrupt_frame *frame);
 
 #endif

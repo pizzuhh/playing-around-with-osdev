@@ -3,11 +3,13 @@
 #include "idt.h"
 
 __attribute__((interrupt)) void div_by_zero(interrupt_frame *frame) {
-    printe("Division by 0!\n");
+    printf("Division by 0!\n");
     frame->eip++; // move to the next instruction. Not very good but...
+
 }
 
 __attribute__((interrupt)) void overflow(interrupt_frame *frame) {
-    printe("Integer overflow!\nProcess halted!");
-    halt;
+    asm volatile ("mov %eax, 0");
+    frame->eip++;
+    //halt;
 }

@@ -22,7 +22,10 @@ void put_kb(uint8_t key) {
         last_pressed_key = '\n';
     } else if (key == BACKSPACE_PRESSED) {
         // TODO: Make this better
-        terminal_putentryat(' ', terminal_color, (terminal_column > 0) ? --terminal_column : --terminal_row, terminal_row);
+        if (terminal_column > 0)
+            terminal_putentryat(' ', terminal_color, --terminal_column, terminal_row);
+        else
+            terminal_putentryat(' ', terminal_color, terminal_column = VGA_WIDTH - 1, --terminal_row);
         keycache[kci--] = '\0'; // update the keycache so we get valid input if we ask the user
     } else if (key == SEMICOLON_PRESSED) {
         terminal_putchar(';', terminal_color);

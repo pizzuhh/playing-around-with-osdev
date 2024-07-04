@@ -44,6 +44,7 @@ extern uint16_t* terminal_buffer;
 extern uint8_t* frame_buffer;
 
 void terminal_initialize(uint8_t color);
+void terminal_clear(uint8_t color);
 void terminal_setcolor(uint8_t color);
 void terminal_putentryat(char c, uint8_t color, size_t col, size_t row);
 void terminal_putchar(char c, uint8_t color);
