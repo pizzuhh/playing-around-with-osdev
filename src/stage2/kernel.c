@@ -22,7 +22,7 @@ void reboot(void)
 }
 
 __attribute__((interrupt)) void t(interrupt_frame *frame) {
-    printf("AAA\n");
+    printf("Invalid opcode\n");
     frame->eip+=2;
 }
 
@@ -126,6 +126,7 @@ void _kstart() {
             reboot();
         } else if (!strcmp(c, "test")) {
            asm volatile ("ud2");
+           int c = 10/0;
            //continue;
         } else {
             printf("Invalid command\n");

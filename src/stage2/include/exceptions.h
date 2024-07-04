@@ -4,7 +4,7 @@
 
 __attribute__((interrupt)) void div_by_zero(interrupt_frame *frame) {
     printf("Division by 0!\n");
-    frame->eip++; // move to the next instruction. Not very good but...
+    frame->eip+=2;
 
 }
 
