@@ -13,3 +13,8 @@ __attribute__((interrupt)) void overflow(interrupt_frame *frame) {
     frame->eip++;
     //halt;
 }
+
+__attribute__((interrupt)) void ivalid_opcode(interrupt_frame *frame) {
+    printf("Invalid opcode\n");
+    frame->eip+=2;
+}

@@ -21,10 +21,6 @@ void reboot(void)
     halt;
 }
 
-__attribute__((interrupt)) void t(interrupt_frame *frame) {
-    printf("Invalid opcode\n");
-    frame->eip+=2;
-}
 
 void _kstart() {
     pit_freq = 1193;
@@ -32,7 +28,7 @@ void _kstart() {
     init_idt();
     set_idt_descriptor(0, div_by_zero, TRAP_GATE);
     set_idt_descriptor(4, overflow, TRAP_GATE);
-    set_idt_descriptor(6, t, TRAP_GATE);
+    set_idt_descriptor(6, ivalid_opcode, TRAP_GATE);
     pic_disable();
     remap_PIC();
     set_idt_descriptor(0x20, timer_irq_handler, INTERRUPT_GATE); // PIT
@@ -126,8 +122,7 @@ void _kstart() {
             reboot();
         } else if (!strcmp(c, "test")) {
            asm volatile ("ud2");
-           int c = 10/0;
-           //continue;
+           continue;
         } else {
             printf("Invalid command\n");
         }

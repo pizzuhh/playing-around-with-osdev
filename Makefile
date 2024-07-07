@@ -1,7 +1,7 @@
 ASM = nasm
 ASMFLAGS = -f bin
 CC = i686-elf-gcc
-CFLAGS = -ffreestanding -nostdlib -m32 -g -mgeneral-regs-only -I./src/stage2/include
+CFLAGS = -ffreestanding -nostdlib -m32 -mgeneral-regs-only -I./src/stage2/include -g
 LD = i686-elf-ld
 
 SRC = ./src
