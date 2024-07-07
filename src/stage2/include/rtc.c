@@ -1,7 +1,6 @@
 #include "./rtc.h"
 #include "libc/stdio.h"
 #include "pic.h"
-#include <stdint.h>
 
 datetime_t global_time = {0};
 

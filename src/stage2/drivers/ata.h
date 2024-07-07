@@ -2,7 +2,7 @@
 #define ATA_H
 #include "../include/libc/stdint.h"
 #include "../include/io.h"
-
+#include "../include/libc/stdio.h"
 
 
 #define ATA_DATA            0x1F0          // R/W

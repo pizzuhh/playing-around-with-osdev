@@ -28,6 +28,7 @@ D_OFILES = $(patsubst %.c, %.o, $(D_CFILES))
 BOOT_SRC = $(wildcard $(BOOTDIR)/*.asm)
 BOOT_BIN = $(patsubst %.asm, %.bin, $(BOOT_SRC))
 KERNEL_BIN = $(SRC)/stage2/kernel.bin
+KERNEL_ELF = $(SRC)/stage2/kernel.elf
 
 DISK_FILE = disk.img
 
@@ -47,7 +48,8 @@ $(BOOTDIR)/%.bin: $(BOOTDIR)/%.asm
 
 $(KERNEL_BIN): $(K_OFILES) $(KERNELDIR)/loader.o $(LIBC_OFILES) $(I_OFILES) $(D_OFILES)
 	@echo "LD $<"
-	@$(LD) -T $(SRC)/stage2/link.ld $(KERNELDIR)/loader.o $(K_OFILES) $(LIBC_OFILES) $(I_OFILES) $(D_OFILES) -o $@ --oformat=binary 
+	@$(LD) -T $(SRC)/stage2/link.ld $(KERNELDIR)/loader.o $(K_OFILES) $(LIBC_OFILES) $(I_OFILES) $(D_OFILES) -o $(KERNEL_ELF) 
+	i686-elf-objcopy -O binary $(KERNEL_ELF) $@
 
 $(LIBCDIR)/%.o: $(LIBCDIR)/%.c
 	@echo "CC $<"
@@ -83,5 +85,5 @@ run: $(DISK_FILE)
 runb: $(DISK_FILE)
 	bochs -f bochs_config_nodbg
 
-run-debug: $(DISK_FILE)
-	bochs -f bochs_config
+debug: $(DISK_FILE)
+	qemu-system-x86_64 -drive file=disk.img,format=raw -audiodev pa,id=speaker -machine pcspk-audiodev=speaker -S -gdb tcp::1234
