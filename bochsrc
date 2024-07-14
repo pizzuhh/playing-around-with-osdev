@@ -1,1 +1,2 @@
-floppya: 1_44=a:/home/pizza/projects/assembly/boot/disk.img, status=inserted
+ata0-master: type=disk, path="disk.img", cylinders=1, heads=1, spt=30
+boot: disk

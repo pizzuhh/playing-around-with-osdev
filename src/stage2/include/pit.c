@@ -5,6 +5,7 @@ int ticks = 0;
 
 __attribute__((interrupt)) void timer_irq_handler(interrupt_frame *frame) {
     if (sleep_counter > 0) (sleep_counter)--;
+    ticks++;
     PIC_sendEOI(0);
 }
 

@@ -1,47 +1,33 @@
-#define NULL ((void *)0)
-#include "drivers/ata.h"
-#include "include/io.h"
-#include "include/libc/stdint.h"
-#include "include/libc/stdio.h"
-#include "include/libc/string.h"
-#include "include/idt.h"
-#include "include/exceptions.h"
-#include "include/pic.h"
-#include "include/pit.h"
-#include "drivers/keyboard.h"
-#include "include/rtc.h"
+#include "krn.h"
+
 uint16_t pit_freq = 0;
-// https://wiki.osdev.org/Reboot#Short_code_to_do_a_8042_reset
-void reboot(void)
-{
-    uint8_t good = 0x02;
-    while (good & 0x02)
-        good = inb(0x64);
-    outb(0x64, 0xFE);
-    halt;
+extern int ticks;
+
+void _kstart() {
+    KINIT
+    uint8_t color = 0x00;
+    // draw something. Text soon™
+    while(1) {
+        for (int x = 0; x <= 320; ++x) {
+            for (int y = 0; y <= 200; ++y) {
+                putpixel(x, y, color);
+            }
+            color++;
+            msleep(10);
+        }
+    }
+
 }
 
 
-void _kstart() {
-    pit_freq = 1193;
+
+
+
+/*CHANGE "mov al, 0x13" to mov al, 0x03 in boot.asm in order this to work*/
+/* void _kstart() {
+    
+    KINIT
     terminal_initialize(vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_BLACK));
-    init_idt();
-    set_idt_descriptor(0, div_by_zero, TRAP_GATE);
-    set_idt_descriptor(4, overflow, TRAP_GATE);
-    set_idt_descriptor(6, ivalid_opcode, TRAP_GATE);
-    pic_disable();
-    remap_PIC();
-    set_idt_descriptor(0x20, timer_irq_handler, INTERRUPT_GATE); // PIT
-    set_idt_descriptor(0x21, kbd_handler, INTERRUPT_GATE);
-    set_idt_descriptor(0x28, rtc_handler, INTERRUPT_GATE);
-    IRQ_clear_mask(0);
-    IRQ_clear_mask(1);
-    IRQ_clear_mask(2); // PIC2
-    IRQ_clear_mask(8); // RTC
-    asm volatile ("sti");
-    enable_rtc();
-    set_pit_mode_frequency(0, MODE2, pit_freq);    
-    printf("Welcome to the kernel of this\nRun `help` for a list of commands\n");
     for(;;) {
         printf("> ");
         char *c = get_input();
@@ -106,7 +92,6 @@ void _kstart() {
         }
         } else if (!strcmp(c, "time")){
             print_time();
-
         } else if (!strcmp(c, "dog")) {
             
             printf("CAT\n");
@@ -123,11 +108,13 @@ void _kstart() {
         } else if (!strcmp(c, "test")) {
            asm volatile ("ud2");
            continue;
+        } else if (!strcmp(c, "ticks")) {
+            printf("%d\n", ticks);
         } else {
             printf("Invalid command\n");
         }
     }
-    
     // for(;;);
     halt;
-}
+} */
+

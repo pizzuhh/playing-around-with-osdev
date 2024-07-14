@@ -6,7 +6,6 @@ idtr_t idtr;
 
 
 __attribute__((interrupt)) void default_exception_handler(interrupt_frame *frame) {
-    // printe("Unhandled exception has been encountered! Halting process!");
     halt;
 }
 

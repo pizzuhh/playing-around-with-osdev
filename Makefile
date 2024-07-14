@@ -3,6 +3,7 @@ ASMFLAGS = -f bin
 CC = i686-elf-gcc
 CFLAGS = -ffreestanding -nostdlib -m32 -mgeneral-regs-only -I./src/stage2/include -g
 LD = i686-elf-ld
+LDFLAGS = -T $(SRC)/stage2/link.ld $(KERNELDIR)/loader.o -Map map.map
 
 SRC = ./src
 BOOTDIR = $(SRC)/boot
@@ -38,9 +39,9 @@ all: $(DISK_FILE)
 
 $(DISK_FILE): $(BOOT_BIN) $(KERNEL_BIN)
 	@echo "Generating disk.img file..."
-	@dd if=/dev/zero of=$@ bs=512 count=3
-	@dd if=./src/boot/boot.bin of=$@ conv=notrunc
-	@dd if=$(KERNEL_BIN) of=$@ conv=notrunc seek=1
+	@dd if=/dev/zero of=$@ bs=512 count=2880
+	@dd if=./src/boot/boot.bin of=$@ bs=512 conv=notrunc
+	@dd if=$(KERNEL_BIN) of=$@ bs=512 conv=notrunc seek=1
 
 $(BOOTDIR)/%.bin: $(BOOTDIR)/%.asm
 	@echo "ASM $<"
@@ -48,7 +49,7 @@ $(BOOTDIR)/%.bin: $(BOOTDIR)/%.asm
 
 $(KERNEL_BIN): $(K_OFILES) $(KERNELDIR)/loader.o $(LIBC_OFILES) $(I_OFILES) $(D_OFILES)
 	@echo "LD $<"
-	@$(LD) -T $(SRC)/stage2/link.ld $(KERNELDIR)/loader.o $(K_OFILES) $(LIBC_OFILES) $(I_OFILES) $(D_OFILES) -o $(KERNEL_ELF) 
+	@$(LD) $(LDFLAGS) $(K_OFILES) $(LIBC_OFILES) $(I_OFILES) $(D_OFILES) -o $(KERNEL_ELF) 
 	i686-elf-objcopy -O binary $(KERNEL_ELF) $@
 
 $(LIBCDIR)/%.o: $(LIBCDIR)/%.c

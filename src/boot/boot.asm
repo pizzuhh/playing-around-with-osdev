@@ -1,8 +1,6 @@
 [BITS 16]
 [ORG 0x7c00]
 
-%define ENDL 0x0D, 0x0A
-
 _start:
     jmp main
 
@@ -53,7 +51,7 @@ _GDT:
 main:
      ; set new video mode; clear screen
     mov ah, 0x00
-    mov al, 0x03
+    mov al, 0x13
     int 0x10
     
     ; read the disk
