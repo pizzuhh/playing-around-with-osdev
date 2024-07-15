@@ -2,6 +2,7 @@
 #define STDIO_H
 #include "stdint.h"
 #include "../pit.h"
+#include "string.h"
 #include <stdarg.h>
 
 // https://wiki.osdev.org/Bare_Bones#Writing_a_kernel_in_C

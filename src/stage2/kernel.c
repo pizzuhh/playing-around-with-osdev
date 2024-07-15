@@ -3,7 +3,7 @@
 uint16_t pit_freq = 0;
 extern int ticks;
 
-void _kstart() {
+/* void _kstart() {
     KINIT
     uint8_t color = 0x00;
     // draw something. Text soon™
@@ -17,17 +17,18 @@ void _kstart() {
         }
     }
 
-}
+} */
 
 
 
 
 
 /*CHANGE "mov al, 0x13" to mov al, 0x03 in boot.asm in order this to work*/
-/* void _kstart() {
+void _kstart() {
     
     KINIT
     terminal_initialize(vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_BLACK));
+    printf("hex: %20x\n", 255);
     for(;;) {
         printf("> ");
         char *c = get_input();
@@ -116,5 +117,5 @@ void _kstart() {
     }
     // for(;;);
     halt;
-} */
+}
 

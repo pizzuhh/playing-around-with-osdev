@@ -51,7 +51,7 @@ _GDT:
 main:
      ; set new video mode; clear screen
     mov ah, 0x00
-    mov al, 0x13
+    mov al, 0x23
     int 0x10
     
     ; read the disk

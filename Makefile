@@ -81,10 +81,10 @@ cleanup:
 	rm -f $(BOOT_BIN) $(KERNEL_BIN) $(LIBC_OFILES) $(K_OFILES) $(I_OFILES) $(KERNELDIR)/loader.o
 
 run: $(DISK_FILE)
-	qemu-system-x86_64 -drive file=disk.img,format=raw -audiodev pa,id=speaker -machine pcspk-audiodev=speaker
+	qemu-system-i386 -drive file=disk.img,format=raw -audiodev pa,id=speaker -machine pcspk-audiodev=speaker
 
 runb: $(DISK_FILE)
-	bochs -f bochs_config_nodbg
+	bochs -f bochsrc
 
 debug: $(DISK_FILE)
-	qemu-system-x86_64 -drive file=disk.img,format=raw -audiodev pa,id=speaker -machine pcspk-audiodev=speaker -S -gdb tcp::1234
+	qemu-system-i386 -drive file=disk.img,format=raw -audiodev pa,id=speaker -machine pcspk-audiodev=speaker -S -gdb tcp::1234

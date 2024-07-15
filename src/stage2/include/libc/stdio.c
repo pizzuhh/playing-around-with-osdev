@@ -1,4 +1,5 @@
 #include "stdio.h"
+#include "stdbool.h"
 #include <stdarg.h>
 
 size_t terminal_row;
@@ -86,66 +87,81 @@ void terminal_writestring(const char* data)
 	update_cursor(terminal_column, terminal_row);
 }
 
+void print_padded_string(const char *str, int width) {
+    for (int i = 0; i < width; i++) {
+        terminal_putchar('0', terminal_color);
+    }
+    terminal_writestring(str);
+}
+
+
 void printf(const char *fmt, ...) {
-	va_list list;
-	va_start(list, fmt);
-	int arg_i = 0;
-	char *arg_s;
-	short arg_sh;
-	while (*fmt) {
-		if (*fmt == '%') {
-			fmt++;
-			switch (*fmt) {
-				case '%':
-					terminal_putchar('%', terminal_color);
-					break;
-				case 'c':
-					arg_i = va_arg(list, int);
+    va_list list;
+    va_start(list, fmt);
+    int arg_i;
+    char *arg_s;
+    int width = 0;
+    bool left_justify = false;
+
+    while (*fmt) {
+        if (*fmt == '%') {
+            fmt++;
+            // Parse width specifier
+            width = 0;
+            while (*fmt >= '0' && *fmt <= '9') {
+                width = width * 10 + (*fmt - '0');
+                fmt++;
+            }
+            switch (*fmt) {
+                case '%':
+                    terminal_putchar('%', terminal_color);
                     break;
-				case 's':
-					arg_s = va_arg(list, char*);
-					terminal_writestring(arg_s);
+                case 'c':
+                    arg_i = va_arg(list, int);
+                    terminal_putchar((char)arg_i, terminal_color);
+                    break;
+                case 's':
+                    arg_s = va_arg(list, char*);
+                    print_padded_string(arg_s, width);
+                    break;
+                case 'x':
+                case 'X':
+                    arg_i = va_arg(list, int);
+                    print_padded_string(convert(arg_i, 16), width);
                     break;
 				case 'd':
-					arg_i = va_arg(list, int);
-					terminal_writestring(convert(arg_i, 10));
-                    break;
-				case 'x':
-				case 'X':
-					arg_i = va_arg(list, int);
-					terminal_writestring(convert(arg_i, 16));
 				case 'h':
 					arg_i = va_arg(list, int);
-					terminal_writestring(convert(arg_i, 10));
-				default:
-					break;
-			}
-		} else {
-			terminal_putchar(*fmt, terminal_color);
-		}
-		fmt++;
-	}
-	va_end(list);
-	update_cursor(terminal_column, terminal_row);
+                    print_padded_string(convert(arg_i, 10), width);
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            terminal_putchar(*fmt, terminal_color);
+        }
+        fmt++;
+    }
+    va_end(list);
+    update_cursor(terminal_column, terminal_row);
 }
 
-char *convert(unsigned int num, int base) 
-{ 
-    static char Representation[]= "0123456789ABCDEF";
-    static char buffer[50]; 
-    char *ptr; 
+char *convert(unsigned int num, int base) {
+    static char Representation[] = "0123456789ABCDEF";
+    static char buffer[50];
+    char *ptr;
 
-    ptr = &buffer[49]; 
-    *ptr = '\0'; 
+    ptr = &buffer[49];
+    *ptr = '\0';
 
-    do 
-    { 
-        *--ptr = Representation[num%base]; 
-        num /= base; 
-    }while(num != 0); 
+    do {
+        *--ptr = Representation[num % base];
+        num /= base;
+    } while (num != 0);
 
-    return(ptr); 
+    return ptr;
 }
+
 void printe(const char *exception) {
     terminal_write(exception, strlen(exception), 0x0F);
 }
