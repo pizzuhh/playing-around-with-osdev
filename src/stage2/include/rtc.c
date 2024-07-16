@@ -64,5 +64,5 @@ void enable_rtc(void) {
 
 void print_time(void) {
     uint16_t yr = 2000 + global_time.year;
-    printf("%d-%d-%dT%d:%d:%d\n", yr, global_time.month, global_time.day, global_time.hours, global_time.minutes, global_time.seconds);
+    printf("%d-%01d-%01dT%01d:%01d:%01d\n", yr, global_time.month, global_time.day, global_time.hours, global_time.minutes, global_time.seconds);
 }

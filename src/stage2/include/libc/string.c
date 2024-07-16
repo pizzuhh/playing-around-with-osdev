@@ -16,29 +16,24 @@ bool strcmp(const char *a, const char *b) {
     return 0;
 }
 
-void strcpy(char *dest, char *src) {
-    int i = 0;
-    while (*src) {
-        dest[i] = src[i];
-    }
+char *strcpy(char *dest, char *src) {
+    char *p = dest;
+    while ((*dest++ = *src++) != '\0');
+    return p;
 }
 
-void strcat(char *dest, char *src) {
-    while (*dest) {
-        dest++;
-    }
-    while (*src) {
-        *dest = *src;
-        dest++;
-        src++;
-    }
-    *dest = '\0';
+char *strcat(char *dest, char *src) {
+    char *p = dest;
+    while (*dest) dest++;
+    while ((*dest++ = *src++) != '\0');
+    return p;
 }
 
 
-void memset(void *dest, uint8_t c, size_t size) {
-    uint8_t *ptr = dest;
-    for (size_t i = 0; i < size; ++i) {
-        ptr[i] = c;
+void *memset(void *ptr, uint8_t c, size_t size) {
+    uint8_t *p = ptr;
+    while (size--) {
+        *p++ = c;
     }
+    return ptr;
 }

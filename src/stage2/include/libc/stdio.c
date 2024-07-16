@@ -87,58 +87,78 @@ void terminal_writestring(const char* data)
 	update_cursor(terminal_column, terminal_row);
 }
 
-void print_padded_string(const char *str, int width) {
-    for (int i = 0; i < width; i++) {
-        terminal_putchar('0', terminal_color);
+static void print_str(char *str, char pad_char, int width) {
+    if (width <= 0) {
+        terminal_writestring(str);
+        return;
     }
-    terminal_writestring(str);
+    char buffer[1024];
+    memset(buffer, pad_char, 1024);
+    strcpy(buffer + width, str);
+    terminal_writestring(buffer);
+    return;
 }
 
-
 void printf(const char *fmt, ...) {
+    /*
+    0 - normal state - print the character
+    1 - parse state - parse the % stuff
+    */
+    int state = 0;
+    char pad_char = ' ';
+    int pad_width = 0;
     va_list list;
     va_start(list, fmt);
     int arg_i;
     char *arg_s;
-    int width = 0;
-    bool left_justify = false;
-
     while (*fmt) {
         if (*fmt == '%') {
+            state = 1;
+            pad_char = ' ';
+            pad_width = 0;
             fmt++;
-            // Parse width specifier
-            width = 0;
-            while (*fmt >= '0' && *fmt <= '9') {
-                width = width * 10 + (*fmt - '0');
-                fmt++;
-            }
-            switch (*fmt) {
-                case '%':
-                    terminal_putchar('%', terminal_color);
-                    break;
-                case 'c':
-                    arg_i = va_arg(list, int);
-                    terminal_putchar((char)arg_i, terminal_color);
-                    break;
-                case 's':
-                    arg_s = va_arg(list, char*);
-                    print_padded_string(arg_s, width);
-                    break;
-                case 'x':
-                case 'X':
-                    arg_i = va_arg(list, int);
-                    print_padded_string(convert(arg_i, 16), width);
-                    break;
-				case 'd':
-				case 'h':
-					arg_i = va_arg(list, int);
-                    print_padded_string(convert(arg_i, 10), width);
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            terminal_putchar(*fmt, terminal_color);
+        }
+        switch (state) {
+            default:
+            case 0:
+                terminal_putchar(*fmt, terminal_color);
+                break;
+            case 1:
+                state = 0;
+                if (*fmt == '0') {pad_char = '0';fmt++;} 
+                while (*fmt >= '0' && *fmt <= '9') {
+                    pad_width = pad_width * 10 + (*fmt - '0');
+                    fmt++;
+                }
+                switch (*fmt) {
+                    case 'x':
+                    case 'X':
+                        arg_i = va_arg(list, int);
+                        print_str(convert(arg_i, 16), pad_char, pad_width);
+                        //fmt++;
+                        break;
+                    case 'd':
+                    case 'h':
+                    case 'i':
+                        arg_i = va_arg(list, int);
+                        print_str(convert(arg_i, 10), pad_char, pad_width);
+                        //fmt++;
+                        break;
+                    case 'c':
+                        arg_i = va_arg(list, int);
+                        terminal_putchar(arg_i, terminal_color);
+                        //fmt++;
+                        break;
+                    case 's':
+                        arg_s = va_arg(list, char*);
+                        print_str(arg_s, pad_char, pad_width);
+                        //fmt++;
+                        break;
+                    default:
+                        break;
+                }
+                state = 0;
+                break;
         }
         fmt++;
     }

@@ -28,7 +28,6 @@ void _kstart() {
     
     KINIT
     terminal_initialize(vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_BLACK));
-    printf("hex: %20x\n", 255);
     for(;;) {
         printf("> ");
         char *c = get_input();
