@@ -5,3 +5,4 @@
 *.elf
 .clangd
 todos*
+serial.log

@@ -183,7 +183,7 @@ typedef enum {
     KP_ENTER_PRESSED        = 0xE01C,
     KP_ENTER_RELEASED       = 0xE09C
 } PS2_KBD_CODES;
-
+extern bool wait_key;
 extern char last_pressed_key;
 extern char keycache[256];
 

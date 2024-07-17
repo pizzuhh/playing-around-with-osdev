@@ -1,33 +1,63 @@
+#include "drivers/serial.h"
+#include "include/pit.h"
+#include "include/rtc.h"
 #include "krn.h"
+
+__attribute__((interrupt)) void dbg(interrupt_frame *frame) {
+    printf("Debug Interrupt called!\nPres any key to continue...\n");
+    wait_key = 1;
+    while (wait_key);
+    asm ("sti");
+}
 
 uint16_t pit_freq = 0;
 extern int ticks;
 
-/* void _kstart() {
-    KINIT
-    uint8_t color = 0x00;
-    // draw something. Text soon™
-    while(1) {
-        for (int x = 0; x <= 320; ++x) {
-            for (int y = 0; y <= 200; ++y) {
-                putpixel(x, y, color);
-            }
-            color++;
-            msleep(10);
-        }
-    }
+uint8_t x[8][8] = {
+    {1,0,0,0,0,0,0,1},
+    {0,1,0,0,0,0,1,0},
+    {0,0,1,0,0,1,0,0},
+    {0,0,0,1,1,0,0,0},
+    {0,0,0,1,1,0,0,0},
+    {0,0,1,0,0,1,0,0},
+    {0,1,0,0,0,0,1,0},
+    {1,0,0,0,0,0,0,1},
+};
 
-} */
+uint8_t heart[8][8] = {
+    {0,1,1,0,0,1,1,0},
+    {1,1,1,1,1,1,1,1},
+    {1,1,1,1,1,1,1,1},
+    {1,1,1,1,1,1,1,1},
+    {0,1,1,1,1,1,1,0},
+    {0,0,1,1,1,1,0,0},
+    {0,0,0,1,1,0,0,0},
+    {0,0,0,0,0,0,0,0},
+};
+
+
+void _kstart() {
+    KINIT
+    init_screen(0x00);
+    int xx = 0, yy = 0;
+    int c = 0x01;
+    while (1) {
+        msleep(1000);
+        draw(heart, c, 0, 0);
+        c = (c < 0xF7) ? c+1 : 0;
+    }
+}
 
 
 
 
 
 /*CHANGE "mov al, 0x13" to mov al, 0x03 in boot.asm in order this to work*/
-void _kstart() {
-    
+/* void _kstart() {
     KINIT
     terminal_initialize(vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_BLACK));
+    write_string_serial("Hello serial");
+    // asm ("int $1"); // test
     for(;;) {
         printf("> ");
         char *c = get_input();
@@ -116,5 +146,5 @@ void _kstart() {
     }
     // for(;;);
     halt;
-}
+} */
 

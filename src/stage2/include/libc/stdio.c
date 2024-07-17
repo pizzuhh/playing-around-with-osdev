@@ -92,9 +92,11 @@ static void print_str(char *str, char pad_char, int width) {
         terminal_writestring(str);
         return;
     }
-    char buffer[1024];
-    memset(buffer, pad_char, 1024);
-    strcpy(buffer + width, str);
+    size_t len = strlen(str);
+    char buffer[(len + width) + 1];
+    memset(buffer, pad_char, (len + width));
+    strcpy(buffer + (width - len), str);
+    buffer[(len + width) + 1] = '\0';
     terminal_writestring(buffer);
     return;
 }

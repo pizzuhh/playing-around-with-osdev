@@ -6,6 +6,8 @@ char *__asdfghjkl = "asdfghjkl";
 char *__zxcvbnm = "zxcvbnm";
 char *__num = "123456789";
 
+bool wait_key = 0;
+
 char last_pressed_key = '\0';
 char keycache[256];
 uint8_t kci = 0;
@@ -88,6 +90,7 @@ void put_kb(uint8_t key) {
 
 
 __attribute__((interrupt)) void kbd_handler(interrupt_frame *frame) {
+    if (wait_key) {wait_key = 0; return;}
     uint8_t code = inb(0x60);
     put_kb(code);
     if (last_pressed_key != '\0') {

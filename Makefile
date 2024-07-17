@@ -74,14 +74,14 @@ $(DRIVER_DIR)/%.o: $(DRIVER_DIR)/%.c
 
 clean:
 	@echo "Clean up..."
-	@rm -f $(BOOT_BIN) $(DISK_FILE) $(KERNEL_BIN) $(LIBC_OFILES) $(K_OFILES) $(I_OFILES) $(KERNELDIR)/loader.o
+	@rm -f $(BOOT_BIN) $(DISK_FILE) $(KERNEL_BIN) $(LIBC_OFILES) $(K_OFILES) $(I_OFILES) $(KERNELDIR)/loader.o serial.log
 
 cleanup:
 	@echo "Clean up object files..."
 	rm -f $(BOOT_BIN) $(KERNEL_BIN) $(LIBC_OFILES) $(K_OFILES) $(I_OFILES) $(KERNELDIR)/loader.o
 
 run: $(DISK_FILE)
-	qemu-system-i386 -drive file=disk.img,format=raw -audiodev pa,id=speaker -machine pcspk-audiodev=speaker
+	qemu-system-i386 -drive file=disk.img,format=raw -audiodev pa,id=speaker -machine pcspk-audiodev=speaker -serial file:serial.log
 
 runb: $(DISK_FILE)
 	bochs -f bochsrc

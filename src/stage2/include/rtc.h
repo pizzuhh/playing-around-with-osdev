@@ -5,6 +5,7 @@
 #include "./libc/stdbool.h"
 #include "./libc/stdint.h"
 #include "./libc/stdio.h"
+#include "../drivers/serial.h"
 
 #define CMOS_CONTROL 0x70
 #define CMOS_DATA 0x71
@@ -32,7 +33,10 @@ static uint8_t get_rtc_reg(uint16_t reg) {
 }
 
 void enable_rtc(void);
-void print_time(void);
+/*
+1 - prints to serial 1
+*/
+void print_time(bool serial);
 __attribute__((interrupt)) void rtc_handler(interrupt_frame *frame);
 
 #endif

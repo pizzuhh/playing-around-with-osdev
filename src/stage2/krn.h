@@ -7,6 +7,7 @@ File used to define *helper* functions and to keep kerne.c somewhat clean.
 #define NULL ((void *)0)
 #include "drivers/ata.h"
 #include "drivers/keyboard.h"
+#include "drivers/serial.h"
 #include "include/io.h"
 #include "include/libc/stdint.h"
 #include "include/libc/stdio.h"
@@ -24,6 +25,7 @@ File used to define *helper* functions and to keep kerne.c somewhat clean.
     init_idt();\
     /*Exceptions*/\
     set_idt_descriptor(0, div_by_zero, TRAP_GATE);\
+    set_idt_descriptor(1, dbg, TRAP_GATE);\
     set_idt_descriptor(4, overflow, TRAP_GATE);\
     set_idt_descriptor(6, invalid_opcode, TRAP_GATE);\
     \
@@ -42,6 +44,7 @@ File used to define *helper* functions and to keep kerne.c somewhat clean.
     asm volatile ("sti");\
     set_pit_mode_frequency(0, MODE2, pit_freq);\
     enable_rtc();\
+    init_serial();\
 
 // https://wiki.osdev.org/Reboot#Short_code_to_do_a_8042_reset
 void reboot(void)
