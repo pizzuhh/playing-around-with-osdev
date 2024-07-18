@@ -186,8 +186,7 @@ typedef enum {
 extern bool wait_key;
 extern char last_pressed_key;
 extern char keycache[256];
-
-char *get_input(void);
+char *get_input(int *s);
 __attribute__((interrupt)) void kbd_handler(interrupt_frame *frame);
 
 // TODO: Keyboard driver

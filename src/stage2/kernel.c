@@ -1,9 +1,11 @@
 #include "drivers/serial.h"
+#include "include/libc/stdio.h"
 #include "include/pit.h"
 #include "include/rtc.h"
 #include "krn.h"
 
 __attribute__((interrupt)) void dbg(interrupt_frame *frame) {
+    prints("Debug Interrupt called!\nPres any key to continue...\n");
     printf("Debug Interrupt called!\nPres any key to continue...\n");
     wait_key = 1;
     while (wait_key);
@@ -35,32 +37,37 @@ uint8_t heart[8][8] = {
     {0,0,0,0,0,0,0,0},
 };
 
-
+#if 1
 void _kstart() {
     KINIT
-    init_screen(0x00);
+    init_screen(0x0F);
+    finish();
     int xx = 0, yy = 0;
     int c = 0x01;
     while (1) {
-        msleep(1000);
-        draw(heart, c, 0, 0);
-        c = (c < 0xF7) ? c+1 : 0;
+        init_screen(0x00);
+        draw(heart, 0x0F, xx, 69);
+        draw(heart, 0x0C, xx+3, 169);
+        draw(heart, 0x04, xx, 0);
+        draw(heart, 0x67, xx, HEIGHT-8);
+        finish();
+        xx++;
     }
 }
+#endif
 
 
 
-
-
+#if 0
 /*CHANGE "mov al, 0x13" to mov al, 0x03 in boot.asm in order this to work*/
-/* void _kstart() {
+void _kstart() {
     KINIT
     terminal_initialize(vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_BLACK));
     write_string_serial("Hello serial");
-    // asm ("int $1"); // test
     for(;;) {
+        int i = 0;
         printf("> ");
-        char *c = get_input();
+        char *c = get_input(&i);
         if (!strcmp(c, "beep")) {
             int bpm = 660;
             terminal_clear(vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_WHITE));
@@ -121,7 +128,7 @@ void _kstart() {
             beep(440, bpm/8);
         }
         } else if (!strcmp(c, "time")){
-            print_time();
+            print_time(0);
         } else if (!strcmp(c, "dog")) {
             
             printf("CAT\n");
@@ -146,5 +153,6 @@ void _kstart() {
     }
     // for(;;);
     halt;
-} */
+}
 
+#endif

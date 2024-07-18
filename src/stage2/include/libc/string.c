@@ -37,3 +37,11 @@ void *memset(void *ptr, uint8_t c, size_t size) {
     }
     return ptr;
 }
+
+void memcpy(void *dest, void *src, size_t size) {
+    uint8_t *d = (uint8_t*)dest;
+    uint8_t *s = (uint8_t*)src;
+    for (int i = 0; i < size; i++) {
+        d[i] = s[i];
+    }
+}

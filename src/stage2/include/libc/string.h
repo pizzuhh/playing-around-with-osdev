@@ -7,4 +7,5 @@ bool strcmp(const char *a, const char *b);
 void *memset(void *dest, uint8_t c, size_t size);
 char *strcpy(char *dest, char *src);
 char *strcat(char *dest, char *src);
+void memcpy(void *dest, void *src, size_t size);
 #endif

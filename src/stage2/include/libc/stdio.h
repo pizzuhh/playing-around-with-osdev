@@ -2,6 +2,7 @@
 #define STDIO_H
 #include "stdint.h"
 #include "../pit.h"
+#include "../../drivers/serial.h"
 #include "string.h"
 #include <stdarg.h>
 
@@ -55,8 +56,8 @@ void terminal_writestring(const char* data);
 
 
 // https://stackoverflow.com/questions/1735236/how-to-write-my-own-printf-in-c
-char *convert(unsigned int num, int base);
 void printf(const char *fmt, ...);
+void prints(const char *fmt, ...);
 void printe(const char *exception);
 void printd(uint32_t delay, const char *msg);
 

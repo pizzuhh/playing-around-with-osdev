@@ -85,6 +85,7 @@ void terminal_writestring(const char* data)
 {
 	terminal_write(data, strlen(data), terminal_color);
 	update_cursor(terminal_column, terminal_row);
+    return;
 }
 
 static void print_str(char *str, char pad_char, int width) {
@@ -101,7 +102,28 @@ static void print_str(char *str, char pad_char, int width) {
     return;
 }
 
-void printf(const char *fmt, ...) {
+static char *convert(unsigned int num, int base, int pad_width, char pad_char) {
+    static char Representation[] = "0123456789ABCDEF";
+    static char buffer[1024];
+    int len = 0;
+    char *ptr;
+
+    ptr = &buffer[1023];
+    *ptr = '\0';
+
+    do {
+        *--ptr = Representation[num % base];
+        len++;
+        num /= base;
+    } while (num != 0);
+    while (len < pad_width && pad_width > 0) {
+        *--ptr = pad_char;
+        len++;
+    }
+    return ptr;
+}
+
+void vsprintf(char *s, const char *fmt, va_list list) {
     /*
     0 - normal state - print the character
     1 - parse state - parse the % stuff
@@ -109,8 +131,6 @@ void printf(const char *fmt, ...) {
     int state = 0;
     char pad_char = ' ';
     int pad_width = 0;
-    va_list list;
-    va_start(list, fmt);
     int arg_i;
     char *arg_s;
     while (*fmt) {
@@ -123,7 +143,7 @@ void printf(const char *fmt, ...) {
         switch (state) {
             default:
             case 0:
-                terminal_putchar(*fmt, terminal_color);
+                *s++ = *fmt;
                 break;
             case 1:
                 state = 0;
@@ -136,25 +156,26 @@ void printf(const char *fmt, ...) {
                     case 'x':
                     case 'X':
                         arg_i = va_arg(list, int);
-                        print_str(convert(arg_i, 16), pad_char, pad_width);
-                        //fmt++;
+                        arg_s = convert(arg_i, 16, pad_width, pad_char);
+                        while (*arg_s)
+                            *s++ = *arg_s++;
                         break;
                     case 'd':
                     case 'h':
                     case 'i':
                         arg_i = va_arg(list, int);
-                        print_str(convert(arg_i, 10), pad_char, pad_width);
-                        //fmt++;
+                        arg_s = convert(arg_i, 10, pad_width, pad_char);
+                        while (*arg_s)
+                            *s++ = *arg_s++;
                         break;
                     case 'c':
                         arg_i = va_arg(list, int);
-                        terminal_putchar(arg_i, terminal_color);
-                        //fmt++;
+                        *s++ = arg_i;
                         break;
                     case 's':
                         arg_s = va_arg(list, char*);
-                        print_str(arg_s, pad_char, pad_width);
-                        //fmt++;
+                        while (*arg_s)
+                            *s++ = *arg_s++;
                         break;
                     default:
                         break;
@@ -164,24 +185,27 @@ void printf(const char *fmt, ...) {
         }
         fmt++;
     }
-    va_end(list);
     update_cursor(terminal_column, terminal_row);
 }
 
-char *convert(unsigned int num, int base) {
-    static char Representation[] = "0123456789ABCDEF";
-    static char buffer[50];
-    char *ptr;
+void printf(const char *fmt, ...) {
+    char buffer[1024];
+    va_list list;
+    va_start(list, fmt);
+    vsprintf(buffer, fmt, list);
+    terminal_writestring(buffer);
+    memset(buffer, 0, 1024);
+    va_end(list);
+}
 
-    ptr = &buffer[49];
-    *ptr = '\0';
-
-    do {
-        *--ptr = Representation[num % base];
-        num /= base;
-    } while (num != 0);
-
-    return ptr;
+void prints(const char *fmt, ...) {
+    char buffer[1024];
+    va_list list;
+    va_start(list, fmt);
+    vsprintf(buffer, fmt, list);
+    write_string_serial(buffer);
+    memset(buffer, 0, 1024);
+    va_end(list);
 }
 
 void printe(const char *exception) {

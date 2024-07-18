@@ -104,8 +104,8 @@ __attribute__((interrupt)) void kbd_handler(interrupt_frame *frame) {
 
 
 
-char *get_input(void) {
-    char *ret = (char*)0x55000; // !!!! THIS IS BAD !!!!
+char *get_input(int *s) {
+    char *ret = (char*)0x55000;
     uint8_t i = 0;
      while (1) {
         if (keycache[i] == '\n') {
@@ -117,5 +117,6 @@ char *get_input(void) {
         ret[i] = keycache[i];
         i++;
     }
+    *s = i;
     return ret;
 }
