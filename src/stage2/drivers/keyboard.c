@@ -1,13 +1,13 @@
 #include "keyboard.h"
 #include "../include/libc/stdint.h"
-
+#include "../include/graphics.h"
 char *__qwertyuiop = "qwertyuiop";
 char *__asdfghjkl = "asdfghjkl";
 char *__zxcvbnm = "zxcvbnm";
 char *__num = "123456789";
 
 bool wait_key = 0;
-
+int a = 0;
 char last_pressed_key = '\0';
 char keycache[256];
 uint8_t kci = 0;

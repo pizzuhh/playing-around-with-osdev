@@ -1,3 +1,4 @@
+#include "drivers/keyboard.h"
 #include "drivers/serial.h"
 #include "include/libc/stdio.h"
 #include "include/pit.h"
@@ -40,19 +41,9 @@ uint8_t heart[8][8] = {
 #if 1
 void _kstart() {
     KINIT
-    init_screen(0x0F);
+    init_screen(0x00);
+    printv(0x0F, "cat 0x%08x", 5);
     finish();
-    int xx = 0, yy = 0;
-    int c = 0x01;
-    while (1) {
-        init_screen(0x00);
-        draw(heart, 0x0F, xx, 69);
-        draw(heart, 0x0C, xx+3, 169);
-        draw(heart, 0x04, xx, 0);
-        draw(heart, 0x67, xx, HEIGHT-8);
-        finish();
-        xx++;
-    }
 }
 #endif
 

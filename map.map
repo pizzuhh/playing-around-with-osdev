@@ -10,171 +10,178 @@ Linker script and memory map
 
                 0x00020000                        . = 0x20000
 
-.text           0x00020000     0x26bf
+.text           0x00020000     0x2857
  *(.text)
  .text          0x00020000        0x9 ./src/stage2/loader.o
- .text          0x00020009      0x351 ./src/stage2/kernel.o
+ .text          0x00020009      0x2de ./src/stage2/kernel.o
                 0x00020077                div_by_zero
                 0x000200b3                overflow
                 0x000200db                invalid_opcode
                 0x00020117                reboot
                 0x00020155                dbg
                 0x000201a6                _kstart
- .text          0x0002035a      0xb63 ./src/stage2/include/libc/stdio.o
-                0x0002035a                terminal_initialize
-                0x0002045b                terminal_clear
-                0x00020543                terminal_setcolor
-                0x0002055b                terminal_putentryat
-                0x00020600                terminal_putchar
-                0x000207c3                terminal_write
-                0x00020828                terminal_writestring_color
-                0x0002085b                terminal_writestring
-                0x00020a39                vsprintf
-                0x00020c31                printf
-                0x00020c8c                prints
-                0x00020ce7                printe
-                0x00020d0d                printd
-                0x00020d7a                disable_cursor
-                0x00020da7                enable_cursor
-                0x00020e3e                update_cursor
- .text          0x00020ebd      0x19f ./src/stage2/include/libc/string.o
-                0x00020ebd                strlen
-                0x00020ef2                strcmp
-                0x00020f31                strcpy
-                0x00020f61                strcat
-                0x00020fa1                memset
-                0x0002100a                memcpy
- .text          0x0002105c       0xed ./src/stage2/include/graphics.o
-                0x0002105c                putpixel
-                0x0002108b                init_screen
-                0x000210b3                draw
-                0x00021127                finish
- .text          0x00021149      0x161 ./src/stage2/include/idt.o
-                0x00021149                default_exception_handler
-                0x0002115e                default_exception_handler_err_code
-                0x0002117c                default_interrupt_handler
-                0x00021191                set_idt_descriptor
-                0x000211e9                init_idt
- .text          0x000212aa       0x93 ./src/stage2/include/io.o
-                0x000212aa                outb
-                0x000212cb                inb
-                0x000212e8                outw
-                0x00021309                inw
-                0x00021328                io_wait
- .text          0x0002133d      0x233 ./src/stage2/include/pic.o
-                0x0002133d                PIC_sendEOI
-                0x00021373                pic_disable
-                0x000213a3                IRQ_set_mask
-                0x00021409                IRQ_clear_mask
-                0x00021471                remap_PIC
- .text          0x00021570      0x1d3 ./src/stage2/include/pit.o
-                0x00021570                timer_irq_handler
-                0x000215bd                msleep
-                0x0002160c                set_pit_mode_frequency
-                0x0002169d                StartSound
-                0x000216ed                StopSound
-                0x00021719                beep
- .text          0x00021743      0x4f5 ./src/stage2/include/rtc.o
-                0x000217b1                rtc_handler
-                0x00021b1e                enable_rtc
-                0x00021b6e                print_time
- .text          0x00021c38      0x2aa ./src/stage2/drivers/ata.o
-                0x00021c38                ata_write_sector
-                0x00021d83                ata_read_sector
- .text          0x00021ee2      0x663 ./src/stage2/drivers/keyboard.o
-                0x00021ee2                put_kb
-                0x00022435                kbd_handler
-                0x000224de                get_input
- .text          0x00022545      0x17a ./src/stage2/drivers/serial.o
-                0x00022545                init_serial
-                0x0002264f                write_char_serial
-                0x00022680                write_string_serial
+ .text          0x000202e7      0xbcf ./src/stage2/include/libc/stdio.o
+                0x000202e7                terminal_initialize
+                0x000203e8                terminal_clear
+                0x000204d0                terminal_setcolor
+                0x000204e8                terminal_putentryat
+                0x0002058d                terminal_putchar
+                0x00020750                terminal_write
+                0x000207b5                terminal_writestring_color
+                0x000207e8                terminal_writestring
+                0x000209c6                vsprintf
+                0x00020bbe                printf
+                0x00020c19                prints
+                0x00020c74                printv
+                0x00020ce0                printe
+                0x00020d06                printd
+                0x00020d73                disable_cursor
+                0x00020da0                enable_cursor
+                0x00020e37                update_cursor
+ .text          0x00020eb6      0x19f ./src/stage2/include/libc/string.o
+                0x00020eb6                strlen
+                0x00020eeb                strcmp
+                0x00020f2a                strcpy
+                0x00020f5a                strcat
+                0x00020f9a                memset
+                0x00021003                memcpy
+ .text          0x00021055      0x28c ./src/stage2/include/graphics.o
+                0x00021055                putpixel
+                0x0002109e                init_screen
+                0x000210c6                draw
+                0x0002113a                fill_rect
+                0x00021187                finish
+                0x00021226                write_char
+                0x00021268                write_string
+ .text          0x000212e1      0x161 ./src/stage2/include/idt.o
+                0x000212e1                default_exception_handler
+                0x000212f6                default_exception_handler_err_code
+                0x00021314                default_interrupt_handler
+                0x00021329                set_idt_descriptor
+                0x00021381                init_idt
+ .text          0x00021442       0x93 ./src/stage2/include/io.o
+                0x00021442                outb
+                0x00021463                inb
+                0x00021480                outw
+                0x000214a1                inw
+                0x000214c0                io_wait
+ .text          0x000214d5      0x233 ./src/stage2/include/pic.o
+                0x000214d5                PIC_sendEOI
+                0x0002150b                pic_disable
+                0x0002153b                IRQ_set_mask
+                0x000215a1                IRQ_clear_mask
+                0x00021609                remap_PIC
+ .text          0x00021708      0x1d3 ./src/stage2/include/pit.o
+                0x00021708                timer_irq_handler
+                0x00021755                msleep
+                0x000217a4                set_pit_mode_frequency
+                0x00021835                StartSound
+                0x00021885                StopSound
+                0x000218b1                beep
+ .text          0x000218db      0x4f5 ./src/stage2/include/rtc.o
+                0x00021949                rtc_handler
+                0x00021cb6                enable_rtc
+                0x00021d06                print_time
+ .text          0x00021dd0      0x2aa ./src/stage2/drivers/ata.o
+                0x00021dd0                ata_write_sector
+                0x00021f1b                ata_read_sector
+ .text          0x0002207a      0x663 ./src/stage2/drivers/keyboard.o
+                0x0002207a                put_kb
+                0x000225cd                kbd_handler
+                0x00022676                get_input
+ .text          0x000226dd      0x17a ./src/stage2/drivers/serial.o
+                0x000226dd                init_serial
+                0x000227e7                write_char_serial
+                0x00022818                write_string_serial
 
-.iplt           0x000226bf        0x0
- .iplt          0x000226bf        0x0 ./src/stage2/loader.o
+.iplt           0x00022857        0x0
+ .iplt          0x00022857        0x0 ./src/stage2/loader.o
 
-.rodata         0x000226c0      0x18f
+.rodata         0x00022858      0x197
  *(.rodata)
- .rodata        0x000226c0       0x65 ./src/stage2/kernel.o
- *fill*         0x00022725        0x3 
- .rodata        0x00022728       0x94 ./src/stage2/include/libc/stdio.o
- *fill*         0x000227bc        0x4 
- .rodata        0x000227c0       0x10 ./src/stage2/include/pit.o
- .rodata        0x000227d0       0x2d ./src/stage2/include/rtc.o
- *fill*         0x000227fd        0x3 
- .rodata        0x00022800       0x14 ./src/stage2/drivers/ata.o
- *fill*         0x00022814        0x4 
- .rodata        0x00022818       0x37 ./src/stage2/drivers/keyboard.o
+ .rodata        0x00022858       0x70 ./src/stage2/kernel.o
+ .rodata        0x000228c8       0x94 ./src/stage2/include/libc/stdio.o
+ *fill*         0x0002295c        0x4 
+ .rodata        0x00022960       0x10 ./src/stage2/include/pit.o
+ .rodata        0x00022970       0x2d ./src/stage2/include/rtc.o
+ *fill*         0x0002299d        0x3 
+ .rodata        0x000229a0       0x14 ./src/stage2/drivers/ata.o
+ *fill*         0x000229b4        0x4 
+ .rodata        0x000229b8       0x37 ./src/stage2/drivers/keyboard.o
 
-.rel.dyn        0x00022850        0x0
- .rel.got       0x00022850        0x0 ./src/stage2/loader.o
- .rel.iplt      0x00022850        0x0 ./src/stage2/loader.o
+.rel.dyn        0x000229f0        0x0
+ .rel.got       0x000229f0        0x0 ./src/stage2/loader.o
+ .rel.iplt      0x000229f0        0x0 ./src/stage2/loader.o
 
-.data           0x00022860       0xa4
+.data           0x00022a00      0x8b0
  *(.data)
- .data          0x00022860       0x80 ./src/stage2/kernel.o
-                0x00022860                x
-                0x000228a0                heart
- .data          0x000228e0       0x11 ./src/stage2/include/libc/stdio.o
- .data          0x000228f1        0x0 ./src/stage2/include/libc/string.o
- .data          0x000228f1        0x0 ./src/stage2/include/graphics.o
- .data          0x000228f1        0x0 ./src/stage2/include/idt.o
- .data          0x000228f1        0x0 ./src/stage2/include/io.o
- .data          0x000228f1        0x0 ./src/stage2/include/pic.o
- .data          0x000228f1        0x0 ./src/stage2/include/pit.o
- .data          0x000228f1        0x0 ./src/stage2/include/rtc.o
- .data          0x000228f1        0x0 ./src/stage2/drivers/ata.o
- *fill*         0x000228f1        0x3 
- .data          0x000228f4       0x10 ./src/stage2/drivers/keyboard.o
-                0x000228f4                __qwertyuiop
-                0x000228f8                __asdfghjkl
-                0x000228fc                __zxcvbnm
-                0x00022900                __num
- .data          0x00022904        0x0 ./src/stage2/drivers/serial.o
+ .data          0x00022a00       0x80 ./src/stage2/kernel.o
+                0x00022a00                x
+                0x00022a40                heart
+ .data          0x00022a80       0x11 ./src/stage2/include/libc/stdio.o
+ .data          0x00022a91        0x0 ./src/stage2/include/libc/string.o
+ *fill*         0x00022a91        0xf 
+ .data          0x00022aa0      0x800 ./src/stage2/include/graphics.o
+                0x00022aa0                g_8x8_font
+ .data          0x000232a0        0x0 ./src/stage2/include/idt.o
+ .data          0x000232a0        0x0 ./src/stage2/include/io.o
+ .data          0x000232a0        0x0 ./src/stage2/include/pic.o
+ .data          0x000232a0        0x0 ./src/stage2/include/pit.o
+ .data          0x000232a0        0x0 ./src/stage2/include/rtc.o
+ .data          0x000232a0        0x0 ./src/stage2/drivers/ata.o
+ .data          0x000232a0       0x10 ./src/stage2/drivers/keyboard.o
+                0x000232a0                __qwertyuiop
+                0x000232a4                __asdfghjkl
+                0x000232a8                __zxcvbnm
+                0x000232ac                __num
+ .data          0x000232b0        0x0 ./src/stage2/drivers/serial.o
 
-.got            0x00022904        0x0
- .got           0x00022904        0x0 ./src/stage2/loader.o
+.got            0x000232b0        0x0
+ .got           0x000232b0        0x0 ./src/stage2/loader.o
 
-.got.plt        0x00022904        0x0
- .got.plt       0x00022904        0x0 ./src/stage2/loader.o
+.got.plt        0x000232b0        0x0
+ .got.plt       0x000232b0        0x0 ./src/stage2/loader.o
 
-.igot.plt       0x00022904        0x0
- .igot.plt      0x00022904        0x0 ./src/stage2/loader.o
+.igot.plt       0x000232b0        0x0
+ .igot.plt      0x000232b0        0x0 ./src/stage2/loader.o
 
-.bss            0x00022920    0x107a2
+.bss            0x000232c0    0x107a2
  *(.bss)
- .bss           0x00022920        0x2 ./src/stage2/kernel.o
-                0x00022920                pit_freq
- *fill*         0x00022922       0x1e 
- .bss           0x00022940      0x420 ./src/stage2/include/libc/stdio.o
-                0x00022940                terminal_row
-                0x00022948                terminal_column
-                0x00022950                terminal_color
-                0x00022954                terminal_buffer
- .bss           0x00022d60        0x0 ./src/stage2/include/libc/string.o
- .bss           0x00022d60     0xfa20 ./src/stage2/include/graphics.o
-                0x00022d60                init_color
-                0x00022d80                backbuff
- .bss           0x00032780      0x806 ./src/stage2/include/idt.o
-                0x00032780                idt
-                0x00032f80                idtr
- .bss           0x00032f86        0x0 ./src/stage2/include/io.o
- .bss           0x00032f86        0x0 ./src/stage2/include/pic.o
- *fill*         0x00032f86        0x2 
- .bss           0x00032f88        0x8 ./src/stage2/include/pit.o
-                0x00032f88                sleep_counter
-                0x00032f8c                ticks
- .bss           0x00032f90        0xc ./src/stage2/include/rtc.o
-                0x00032f90                global_time
- .bss           0x00032f9c        0x0 ./src/stage2/drivers/ata.o
- *fill*         0x00032f9c        0x4 
- .bss           0x00032fa0      0x121 ./src/stage2/drivers/keyboard.o
-                0x00032fa0                wait_key
-                0x00032fa1                last_pressed_key
-                0x00032fc0                keycache
-                0x000330c0                kci
- .bss           0x000330c1        0x1 ./src/stage2/drivers/serial.o
-                0x000330c1                is_serial_on
+ .bss           0x000232c0        0x2 ./src/stage2/kernel.o
+                0x000232c0                pit_freq
+ *fill*         0x000232c2       0x1e 
+ .bss           0x000232e0      0x420 ./src/stage2/include/libc/stdio.o
+                0x000232e0                terminal_row
+                0x000232e8                terminal_column
+                0x000232f0                terminal_color
+                0x000232f4                terminal_buffer
+ .bss           0x00023700        0x0 ./src/stage2/include/libc/string.o
+ .bss           0x00023700     0xfa20 ./src/stage2/include/graphics.o
+                0x00023700                init_color
+                0x00023704                curx
+                0x00023708                cury
+                0x00023720                backbuff
+ .bss           0x00033120      0x806 ./src/stage2/include/idt.o
+                0x00033120                idt
+                0x00033920                idtr
+ .bss           0x00033926        0x0 ./src/stage2/include/io.o
+ .bss           0x00033926        0x0 ./src/stage2/include/pic.o
+ *fill*         0x00033926        0x2 
+ .bss           0x00033928        0x8 ./src/stage2/include/pit.o
+                0x00033928                sleep_counter
+                0x0003392c                ticks
+ .bss           0x00033930        0xc ./src/stage2/include/rtc.o
+                0x00033930                global_time
+ .bss           0x0003393c        0x0 ./src/stage2/drivers/ata.o
+ *fill*         0x0003393c        0x4 
+ .bss           0x00033940      0x121 ./src/stage2/drivers/keyboard.o
+                0x00033940                wait_key
+                0x00033944                a
+                0x00033948                last_pressed_key
+                0x00033960                keycache
+                0x00033a60                kci
+ .bss           0x00033a61        0x1 ./src/stage2/drivers/serial.o
+                0x00033a61                is_serial_on
 LOAD ./src/stage2/loader.o
 LOAD ./src/stage2/kernel.o
 LOAD ./src/stage2/include/libc/stdio.o
@@ -190,33 +197,33 @@ LOAD ./src/stage2/drivers/keyboard.o
 LOAD ./src/stage2/drivers/serial.o
 OUTPUT(./src/stage2/kernel.elf elf32-i386)
 
-.debug_info     0x00000000     0x24c6
- .debug_info    0x00000000      0x42b ./src/stage2/kernel.o
- .debug_info    0x0000042b      0x71f ./src/stage2/include/libc/stdio.o
- .debug_info    0x00000b4a      0x235 ./src/stage2/include/libc/string.o
- .debug_info    0x00000d7f      0x1fe ./src/stage2/include/graphics.o
- .debug_info    0x00000f7d      0x2b4 ./src/stage2/include/idt.o
- .debug_info    0x00001231      0x13e ./src/stage2/include/io.o
- .debug_info    0x0000136f      0x17c ./src/stage2/include/pic.o
- .debug_info    0x000014eb      0x290 ./src/stage2/include/pit.o
- .debug_info    0x0000177b      0x324 ./src/stage2/include/rtc.o
- .debug_info    0x00001a9f      0x204 ./src/stage2/drivers/ata.o
- .debug_info    0x00001ca3      0x6ff ./src/stage2/drivers/keyboard.o
- .debug_info    0x000023a2      0x124 ./src/stage2/drivers/serial.o
+.debug_info     0x00000000     0x26fd
+ .debug_info    0x00000000      0x3e3 ./src/stage2/kernel.o
+ .debug_info    0x000003e3      0x788 ./src/stage2/include/libc/stdio.o
+ .debug_info    0x00000b6b      0x235 ./src/stage2/include/libc/string.o
+ .debug_info    0x00000da0      0x406 ./src/stage2/include/graphics.o
+ .debug_info    0x000011a6      0x2b4 ./src/stage2/include/idt.o
+ .debug_info    0x0000145a      0x13e ./src/stage2/include/io.o
+ .debug_info    0x00001598      0x17c ./src/stage2/include/pic.o
+ .debug_info    0x00001714      0x290 ./src/stage2/include/pit.o
+ .debug_info    0x000019a4      0x324 ./src/stage2/include/rtc.o
+ .debug_info    0x00001cc8      0x204 ./src/stage2/drivers/ata.o
+ .debug_info    0x00001ecc      0x70d ./src/stage2/drivers/keyboard.o
+ .debug_info    0x000025d9      0x124 ./src/stage2/drivers/serial.o
 
-.debug_abbrev   0x00000000     0x1016
- .debug_abbrev  0x00000000      0x23f ./src/stage2/kernel.o
- .debug_abbrev  0x0000023f      0x1e2 ./src/stage2/include/libc/stdio.o
- .debug_abbrev  0x00000421       0xe6 ./src/stage2/include/libc/string.o
- .debug_abbrev  0x00000507      0x16d ./src/stage2/include/graphics.o
- .debug_abbrev  0x00000674      0x172 ./src/stage2/include/idt.o
- .debug_abbrev  0x000007e6       0xbd ./src/stage2/include/io.o
- .debug_abbrev  0x000008a3       0xff ./src/stage2/include/pic.o
- .debug_abbrev  0x000009a2      0x13b ./src/stage2/include/pit.o
- .debug_abbrev  0x00000add      0x176 ./src/stage2/include/rtc.o
- .debug_abbrev  0x00000c53      0x10b ./src/stage2/drivers/ata.o
- .debug_abbrev  0x00000d5e      0x1cb ./src/stage2/drivers/keyboard.o
- .debug_abbrev  0x00000f29       0xed ./src/stage2/drivers/serial.o
+.debug_abbrev   0x00000000     0x1033
+ .debug_abbrev  0x00000000      0x22b ./src/stage2/kernel.o
+ .debug_abbrev  0x0000022b      0x1e2 ./src/stage2/include/libc/stdio.o
+ .debug_abbrev  0x0000040d       0xe6 ./src/stage2/include/libc/string.o
+ .debug_abbrev  0x000004f3      0x19d ./src/stage2/include/graphics.o
+ .debug_abbrev  0x00000690      0x172 ./src/stage2/include/idt.o
+ .debug_abbrev  0x00000802       0xbd ./src/stage2/include/io.o
+ .debug_abbrev  0x000008bf       0xff ./src/stage2/include/pic.o
+ .debug_abbrev  0x000009be      0x13b ./src/stage2/include/pit.o
+ .debug_abbrev  0x00000af9      0x176 ./src/stage2/include/rtc.o
+ .debug_abbrev  0x00000c6f      0x10b ./src/stage2/drivers/ata.o
+ .debug_abbrev  0x00000d7a      0x1cc ./src/stage2/drivers/keyboard.o
+ .debug_abbrev  0x00000f46       0xed ./src/stage2/drivers/serial.o
 
 .debug_aranges  0x00000000      0x180
  .debug_aranges
@@ -244,62 +251,62 @@ OUTPUT(./src/stage2/kernel.elf elf32-i386)
  .debug_aranges
                 0x00000160       0x20 ./src/stage2/drivers/serial.o
 
-.debug_line     0x00000000     0x1312
- .debug_line    0x00000000      0x17b ./src/stage2/kernel.o
- .debug_line    0x0000017b      0x400 ./src/stage2/include/libc/stdio.o
- .debug_line    0x0000057b      0x16d ./src/stage2/include/libc/string.o
- .debug_line    0x000006e8       0xbb ./src/stage2/include/graphics.o
- .debug_line    0x000007a3      0x10d ./src/stage2/include/idt.o
- .debug_line    0x000008b0       0x84 ./src/stage2/include/io.o
- .debug_line    0x00000934       0xdf ./src/stage2/include/pic.o
- .debug_line    0x00000a13      0x11c ./src/stage2/include/pit.o
- .debug_line    0x00000b2f      0x298 ./src/stage2/include/rtc.o
- .debug_line    0x00000dc7      0x1bb ./src/stage2/drivers/ata.o
- .debug_line    0x00000f82      0x2be ./src/stage2/drivers/keyboard.o
- .debug_line    0x00001240       0xd2 ./src/stage2/drivers/serial.o
+.debug_line     0x00000000     0x13c8
+ .debug_line    0x00000000      0x13c ./src/stage2/kernel.o
+ .debug_line    0x0000013c      0x419 ./src/stage2/include/libc/stdio.o
+ .debug_line    0x00000555      0x16d ./src/stage2/include/libc/string.o
+ .debug_line    0x000006c2      0x1a0 ./src/stage2/include/graphics.o
+ .debug_line    0x00000862      0x10d ./src/stage2/include/idt.o
+ .debug_line    0x0000096f       0x84 ./src/stage2/include/io.o
+ .debug_line    0x000009f3       0xdf ./src/stage2/include/pic.o
+ .debug_line    0x00000ad2      0x11c ./src/stage2/include/pit.o
+ .debug_line    0x00000bee      0x28f ./src/stage2/include/rtc.o
+ .debug_line    0x00000e7d      0x1bb ./src/stage2/drivers/ata.o
+ .debug_line    0x00001038      0x2be ./src/stage2/drivers/keyboard.o
+ .debug_line    0x000012f6       0xd2 ./src/stage2/drivers/serial.o
 
-.debug_str      0x00000000      0xe75
- .debug_str     0x00000000      0xe75 ./src/stage2/kernel.o
-                                0x267 (size before relaxing)
- .debug_str     0x00000e75      0x314 ./src/stage2/include/libc/stdio.o
- .debug_str     0x00000e75       0xfb ./src/stage2/include/libc/string.o
- .debug_str     0x00000e75      0x120 ./src/stage2/include/graphics.o
- .debug_str     0x00000e75      0x1e9 ./src/stage2/include/idt.o
- .debug_str     0x00000e75       0xd8 ./src/stage2/include/io.o
- .debug_str     0x00000e75      0x12f ./src/stage2/include/pic.o
- .debug_str     0x00000e75      0x1b8 ./src/stage2/include/pit.o
- .debug_str     0x00000e75      0x1ee ./src/stage2/include/rtc.o
- .debug_str     0x00000e75      0x13d ./src/stage2/drivers/ata.o
- .debug_str     0x00000e75      0xaf9 ./src/stage2/drivers/keyboard.o
- .debug_str     0x00000e75      0x116 ./src/stage2/drivers/serial.o
+.debug_str      0x00000000      0xecf
+ .debug_str     0x00000000      0xecf ./src/stage2/kernel.o
+                                0x269 (size before relaxing)
+ .debug_str     0x00000ecf      0x328 ./src/stage2/include/libc/stdio.o
+ .debug_str     0x00000ecf       0xfb ./src/stage2/include/libc/string.o
+ .debug_str     0x00000ecf      0x178 ./src/stage2/include/graphics.o
+ .debug_str     0x00000ecf      0x1e9 ./src/stage2/include/idt.o
+ .debug_str     0x00000ecf       0xd8 ./src/stage2/include/io.o
+ .debug_str     0x00000ecf      0x12f ./src/stage2/include/pic.o
+ .debug_str     0x00000ecf      0x1b8 ./src/stage2/include/pit.o
+ .debug_str     0x00000ecf      0x1ee ./src/stage2/include/rtc.o
+ .debug_str     0x00000ecf      0x13d ./src/stage2/drivers/ata.o
+ .debug_str     0x00000ecf      0xaf9 ./src/stage2/drivers/keyboard.o
+ .debug_str     0x00000ecf      0x116 ./src/stage2/drivers/serial.o
 
 .debug_line_str
-                0x00000000      0x43b
+                0x00000000      0x47b
  .debug_line_str
-                0x00000000      0x43b ./src/stage2/kernel.o
-                                0x18e (size before relaxing)
+                0x00000000      0x47b ./src/stage2/kernel.o
+                                0x1c9 (size before relaxing)
  .debug_line_str
-                0x0000043b      0x180 ./src/stage2/include/libc/stdio.o
+                0x0000047b      0x1b1 ./src/stage2/include/libc/stdio.o
  .debug_line_str
-                0x0000043b       0xb4 ./src/stage2/include/libc/string.o
+                0x0000047b       0xb4 ./src/stage2/include/libc/string.o
  .debug_line_str
-                0x0000043b       0xd9 ./src/stage2/include/graphics.o
+                0x0000047b       0xd9 ./src/stage2/include/graphics.o
  .debug_line_str
-                0x0000043b       0xa5 ./src/stage2/include/idt.o
+                0x0000047b       0xa5 ./src/stage2/include/idt.o
  .debug_line_str
-                0x0000043b       0x9c ./src/stage2/include/io.o
+                0x0000047b       0x9c ./src/stage2/include/io.o
  .debug_line_str
-                0x0000043b       0xbb ./src/stage2/include/pic.o
+                0x0000047b       0xbb ./src/stage2/include/pic.o
  .debug_line_str
-                0x0000043b      0x106 ./src/stage2/include/pit.o
+                0x0000047b      0x106 ./src/stage2/include/pit.o
  .debug_line_str
-                0x0000043b      0x130 ./src/stage2/include/rtc.o
+                0x0000047b      0x107 ./src/stage2/include/rtc.o
  .debug_line_str
-                0x0000043b       0xd5 ./src/stage2/drivers/ata.o
+                0x0000047b       0xd5 ./src/stage2/drivers/ata.o
  .debug_line_str
-                0x0000043b      0x12f ./src/stage2/drivers/keyboard.o
+                0x0000047b      0x12f ./src/stage2/drivers/keyboard.o
  .debug_line_str
-                0x0000043b       0xd6 ./src/stage2/drivers/serial.o
+                0x0000047b       0xd6 ./src/stage2/drivers/serial.o
 
 .comment        0x00000000       0x12
  .comment       0x00000000       0x12 ./src/stage2/kernel.o
@@ -316,16 +323,16 @@ OUTPUT(./src/stage2/kernel.elf elf32-i386)
  .comment       0x00000012       0x13 ./src/stage2/drivers/keyboard.o
  .comment       0x00000012       0x13 ./src/stage2/drivers/serial.o
 
-.debug_frame    0x00000000      0xaa4
- .debug_frame   0x00000000      0x148 ./src/stage2/kernel.o
- .debug_frame   0x00000148      0x27c ./src/stage2/include/libc/stdio.o
- .debug_frame   0x000003c4       0xe0 ./src/stage2/include/libc/string.o
- .debug_frame   0x000004a4       0x98 ./src/stage2/include/graphics.o
- .debug_frame   0x0000053c       0xc4 ./src/stage2/include/idt.o
- .debug_frame   0x00000600       0xb4 ./src/stage2/include/io.o
- .debug_frame   0x000006b4       0xbc ./src/stage2/include/pic.o
- .debug_frame   0x00000770       0xe0 ./src/stage2/include/pit.o
- .debug_frame   0x00000850       0xe0 ./src/stage2/include/rtc.o
- .debug_frame   0x00000930       0x58 ./src/stage2/drivers/ata.o
- .debug_frame   0x00000988       0x88 ./src/stage2/drivers/keyboard.o
- .debug_frame   0x00000a10       0x94 ./src/stage2/drivers/serial.o
+.debug_frame    0x00000000      0xb50
+ .debug_frame   0x00000000      0x150 ./src/stage2/kernel.o
+ .debug_frame   0x00000150      0x29c ./src/stage2/include/libc/stdio.o
+ .debug_frame   0x000003ec       0xe0 ./src/stage2/include/libc/string.o
+ .debug_frame   0x000004cc      0x11c ./src/stage2/include/graphics.o
+ .debug_frame   0x000005e8       0xc4 ./src/stage2/include/idt.o
+ .debug_frame   0x000006ac       0xb4 ./src/stage2/include/io.o
+ .debug_frame   0x00000760       0xbc ./src/stage2/include/pic.o
+ .debug_frame   0x0000081c       0xe0 ./src/stage2/include/pit.o
+ .debug_frame   0x000008fc       0xe0 ./src/stage2/include/rtc.o
+ .debug_frame   0x000009dc       0x58 ./src/stage2/drivers/ata.o
+ .debug_frame   0x00000a34       0x88 ./src/stage2/drivers/keyboard.o
+ .debug_frame   0x00000abc       0x94 ./src/stage2/drivers/serial.o

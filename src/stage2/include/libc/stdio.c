@@ -1,6 +1,5 @@
 #include "stdio.h"
 #include "stdbool.h"
-#include <stdarg.h>
 
 size_t terminal_row;
 size_t terminal_column;
@@ -204,6 +203,16 @@ void prints(const char *fmt, ...) {
     va_start(list, fmt);
     vsprintf(buffer, fmt, list);
     write_string_serial(buffer);
+    memset(buffer, 0, 1024);
+    va_end(list);
+}
+
+void printv(uint8_t color, const char *fmt, ...) {
+    char buffer[1024];
+    va_list list;
+    va_start(list, fmt);
+    vsprintf(buffer, fmt, list);
+    write_string(buffer, color);
     memset(buffer, 0, 1024);
     va_end(list);
 }

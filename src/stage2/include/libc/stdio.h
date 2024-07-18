@@ -3,6 +3,7 @@
 #include "stdint.h"
 #include "../pit.h"
 #include "../../drivers/serial.h"
+#include "../../include/graphics.h"
 #include "string.h"
 #include <stdarg.h>
 
@@ -58,6 +59,7 @@ void terminal_writestring(const char* data);
 // https://stackoverflow.com/questions/1735236/how-to-write-my-own-printf-in-c
 void printf(const char *fmt, ...);
 void prints(const char *fmt, ...);
+void printv(uint8_t color, const char *fmt, ...);
 void printe(const char *exception);
 void printd(uint32_t delay, const char *msg);
 
