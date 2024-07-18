@@ -41,9 +41,15 @@ uint8_t heart[8][8] = {
 #if 1
 void _kstart() {
     KINIT
-    init_screen(0x00);
-    printv(0x0F, "cat 0x%08x", 5);
+    init_screen(0x00, 0x0F);
     finish();
+    int i = 0;
+    char *c = get_input(&i);
+    if (!strcmp(c, "cat")) {
+        printv(default_color[1], "meow\n\naaaaaa %d", 69);
+        draw(heart, default_color[1], curx, cury);
+        finish();
+    }
 }
 #endif
 

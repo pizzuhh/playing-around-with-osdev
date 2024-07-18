@@ -14,76 +14,79 @@ uint8_t kci = 0;
 
 void put_kb(uint8_t key) {
     if (key == SQ_BRACKETO_PRESSED) {
-        terminal_putchar('[', terminal_color); 
+        putchar('[');
         last_pressed_key = '[';
     } else if (key == SQ_BRACKETC_PRESSED) {
-        terminal_putchar(']', terminal_color);
+        putchar(']');
         last_pressed_key = ']';
     } else if (key == ENTER_PRESSED) {
-        terminal_putchar('\n', terminal_color);
+        putchar('\n');
         last_pressed_key = '\n';
     } else if (key == BACKSPACE_PRESSED) {
-        // TODO: Make this better
-        if (terminal_column > 0)
-            terminal_putentryat(' ', terminal_color, --terminal_column, terminal_row);
-        else
-            terminal_putentryat(' ', terminal_color, terminal_column = VGA_WIDTH - 1, --terminal_row);
+        if (curx > 0) {
+            curx -= 8;
+            write_char('\b', default_color[1], curx, cury);
+        } else {
+            curx = WIDTH - 1;
+            cury -= 8;
+            write_char('\b', default_color[1], curx, cury);
+        }
         keycache[kci--] = '\0'; // update the keycache so we get valid input if we ask the user
     } else if (key == SEMICOLON_PRESSED) {
-        terminal_putchar(';', terminal_color);
+        putchar(';');
         last_pressed_key = ';';
     } else if (key == SINGLE_QUOTE_PRESSED) {
-        terminal_putchar('\'', terminal_color);
+        putchar('\'');
         last_pressed_key = '\'';
     } else if (key == BACK_TICK_PRESSED) {
-        terminal_putchar('`', terminal_color);
+        putchar('`');
         last_pressed_key = '`';
     } else if (key == BACK_SLASH_PRESSED) {
-        terminal_putchar('\\', terminal_color);
+        putchar('\\');
         last_pressed_key = '\\';
     } else if (key == COMMA_PRESSED) {
-        terminal_putchar(',', terminal_color);
+        putchar(',');
         last_pressed_key = ',';
     } else if (key == DOT_PRESSED) {
-        terminal_putchar('.', terminal_color);
+        putchar('.');
         last_pressed_key = '.';
     } else if (key == KP_STAR_PRESSED) {
-        terminal_putchar('*', terminal_color);
+        putchar('*');
         last_pressed_key = '*';
     } else if (key == SPACE_PRESSED) {
-        terminal_putchar(' ', terminal_color);
+        putchar(' ');
         last_pressed_key = ' ';
     } else if (key == ZERO_PRESSED) {
-        terminal_putchar('0', terminal_color);
+        putchar('0');
         last_pressed_key = '0';
     } else if (key == KP_PLUS_PRESSED) {
-        terminal_putchar('+', terminal_color);
+        putchar('+');
         last_pressed_key = '+';
     } else if (key == KP_MINUS_PRESSED) {
-        terminal_putchar('-', terminal_color);
+        putchar('-');
         last_pressed_key = '-';
     } else if (key == EQUAL_PRESSED) {
-        terminal_putchar('=', terminal_color);
+        putchar('=');
         last_pressed_key = '=';
     } else if (key == DASH_PRESSED)  {
-        terminal_putchar('-', terminal_color);
+        putchar('-');
         last_pressed_key = '-';
     } else if (key == FORWARD_SLASH_PRESSED) {
-        terminal_putchar('/', terminal_color);
+        putchar('/');
         last_pressed_key = '/';
     } else if (key == F12_PRESSED) {
         asm volatile ("jmp 0xFFFF");
     } else if (key >= ONE_PRESSED && key <= NINE_PRESSED){
-        terminal_putchar(__num[key - ONE_PRESSED], terminal_color);
+        putchar(__num[key - ONE_PRESSED]);
         last_pressed_key = __num[key - ONE_PRESSED];
     } else if (key >= Q_PRESSED && key <= P_PRESSED){
-        terminal_putchar(__qwertyuiop[key - Q_PRESSED], terminal_color);
+        putchar(__qwertyuiop[key - Q_PRESSED]);
         last_pressed_key = __qwertyuiop[key - Q_PRESSED];
     } else if (key >= A_PRESSED && key <= L_PRESSED) {
-        terminal_putchar(__asdfghjkl[key - A_PRESSED], terminal_color);
+        putchar(__asdfghjkl[key - A_PRESSED]);
         last_pressed_key = __asdfghjkl[key - A_PRESSED];
     } else if (key >= Z_PRESSED && key <= M_PRESSED) {
-        terminal_putchar(__zxcvbnm[key - Z_PRESSED], terminal_color);
+        putchar(__zxcvbnm[key - Z_PRESSED]);
         last_pressed_key = __zxcvbnm[key - Z_PRESSED];
     }
 }

@@ -1,5 +1,113 @@
 #include "./graphics.h"
-uint8_t init_color = 0x00;
+
+uint8_t default_color[2] = {0x00, 0x0F};
+
+uint32_t curx = 0, cury = 0;
+
+#define COLOR_DEPTH 1
+
+
+uint8_t backbuff[WIDTH * HEIGHT * COLOR_DEPTH];
+
+void putpixel(uint32_t x, uint32_t y, uint8_t color) {
+    if (x > WIDTH || y > HEIGHT) return;
+    uint32_t offset = y * WIDTH + x;
+    backbuff[offset] = color; 
+}
+
+void init_screen(uint8_t bg_color, uint8_t fg_color) {
+    default_color[0] = bg_color;
+    default_color[1] = fg_color;
+    memset(backbuff, default_color[0], WIDTH * HEIGHT * COLOR_DEPTH);
+}
+
+void clear_screen(void) {
+    memset(backbuff, default_color[0], WIDTH * HEIGHT * COLOR_DEPTH);
+}
+
+void draw(uint8_t icon[8][8], uint8_t color, uint32_t sx, uint32_t sy) {
+    for (int y = 0; y < 8; ++y) {
+        for (int x = 0; x < 8; ++x) {
+            if (icon[y][x] == 1) {
+                putpixel(sx + x, sy + y, color);
+            }
+        }
+    }
+}
+
+void fill_rect(uint32_t sx, uint32_t sy, uint32_t ex, uint32_t ey, uint8_t color) {
+    for (int y = sy; y <ey; y++) {
+        for (int x = sx; x < ex; x++) {
+            putpixel(x, y, color);
+        }
+    }
+}
+
+void finish(void) {
+    memcpy((uint8_t*)VGA_MEMORY, backbuff, WIDTH * HEIGHT * COLOR_DEPTH);
+}
+
+static void convert_font_data(uint8_t character, uint8_t icon[8][8]) {
+    for (int i = 0; i < 8; i++) {
+        uint8_t byte = g_8x8_font[character * 8 + i];
+        for (int j = 0; j < 8; j++) {
+            icon[i][j] = (byte >> (7 - j)) & 1;
+        }
+    }
+}
+
+void write_char(uint8_t chr, uint8_t color, uint32_t x, uint32_t y) {
+    if (chr == '\b') {
+        for (int y = cury; y < cury+8; y++) {
+            for (int x = curx; x < curx+8; x++) {
+                putpixel(x, y, default_color[0]);
+            }
+        }
+        finish();
+        return;
+    }
+    uint8_t icon[8][8];
+    convert_font_data(chr, icon);
+    draw(icon, color, x, y);
+    finish();
+}
+
+void write_string(char *str, uint8_t color) {
+    
+    while (*str) {
+        if (curx >= WIDTH) {
+            curx = 0;
+            cury += 8;
+        }
+        if (*str == '\n') {
+            curx = 0;
+            cury += 8;
+            str++;
+            continue;
+        }
+        write_char(*str, color, curx, cury);
+        str++;
+        curx+=8;
+    }
+    
+}
+
+void putchar(char c) {
+    // check for special characters line \n before drawing
+    if (c == '\n') {
+        curx = 0;
+        cury += 8;
+        return;
+    }
+    if (curx >= WIDTH) {
+        curx = 0;
+        cury += 8;
+    }
+    
+    write_char(c, default_color[1], curx, cury);
+    curx += 8;
+}
+
 unsigned char g_8x8_font[2048] =
 {
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -259,71 +367,3 @@ unsigned char g_8x8_font[2048] =
 	0x00, 0x00, 0x3C, 0x3C, 0x3C, 0x3C, 0x00, 0x00,
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
-uint32_t curx = 0, cury = 0;
-
-#define COLOR_DEPTH 1
-
-
-uint8_t backbuff[WIDTH * HEIGHT * COLOR_DEPTH];
-
-void putpixel(uint32_t x, uint32_t y, uint8_t color) {
-    if (x > WIDTH || y > HEIGHT) return;
-    uint32_t offset = y * WIDTH + x;
-    backbuff[offset] = color; 
-}
-
-void init_screen(uint8_t color) {
-    memset(backbuff, color, WIDTH * HEIGHT * COLOR_DEPTH);
-}
-
-void draw(uint8_t icon[8][8], uint8_t color, uint32_t sx, uint32_t sy) {
-    for (int y = 0; y < 8; ++y) {
-        for (int x = 0; x < 8; ++x) {
-            if (icon[y][x] == 1) {
-                putpixel(sx + x, sy + y, color);
-            }
-        }
-    }
-}
-
-void fill_rect(uint32_t sx, uint32_t sy, uint32_t ex, uint32_t ey, uint8_t color) {
-    for (int y = sy; y <ey; y++) {
-        for (int x = sx; x < ex; x++) {
-            putpixel(x, y, color);
-        }
-    }
-}
-
-void finish(void) {
-    memcpy((uint8_t*)VGA_MEMORY, backbuff, WIDTH * HEIGHT * COLOR_DEPTH);
-}
-
-static void convert_font_data(uint8_t character, uint8_t icon[8][8]) {
-    for (int i = 0; i < 8; i++) {
-        uint8_t byte = g_8x8_font[character * 8 + i];
-        for (int j = 0; j < 8; j++) {
-            icon[i][j] = (byte >> (7 - j)) & 1;
-        }
-    }
-}
-
-void write_char(uint8_t chr, uint8_t color, uint32_t x, uint32_t y) {
-    uint8_t icon[8][8];
-    convert_font_data(chr, icon);
-    draw(icon, color, x, y);
-    finish();
-}
-
-void write_string(char *str, uint8_t color) {
-    
-    while (*str) {
-        if (curx >= WIDTH) {
-            curx = 0;
-            cury += 8;
-        }
-        write_char(*str, color, curx, cury);
-        str++;
-        curx+=8;
-    }
-    
-}
