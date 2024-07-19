@@ -4,7 +4,7 @@
 
 
 __attribute__((interrupt)) void div_by_zero(interrupt_frame *frame) {
-    printf("Division by 0!\n");
+    printk("Division by 0!\n");
     frame->eip+=2;
 
 }
@@ -16,6 +16,6 @@ __attribute__((interrupt)) void overflow(interrupt_frame *frame) {
 }
 
 __attribute__((interrupt)) void invalid_opcode(interrupt_frame *frame) {
-    printf("Invalid opcode\n");
+    printk("Invalid opcode\n");
     frame->eip+=2;
 }

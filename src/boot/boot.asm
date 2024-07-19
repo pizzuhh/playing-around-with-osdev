@@ -4,7 +4,6 @@
 _start:
     jmp main
 
-
 ; PUTS puts string to teletype output
 ; si - null terminated string
 puts:
@@ -18,7 +17,6 @@ puts:
     int 10h
     inc si
     jmp .next_char
-
     .done:
         ret
 
@@ -66,6 +64,55 @@ main:
     xor bx, bx
     int 0x13
     ;jc .disk_error
+    
+    ; detect memory
+    xor ax, ax
+    mov es, ax
+    memmap_: equ 0x8000
+    mov di, 0x8004
+    xor ebx, ebx
+    xor bp, bp
+    mov eax, 0xE820
+    mov edx, "PAMS"
+    mov [es:di + 20], dword 1
+    mov ecx, 24
+    int 0x15
+    jc .error
+    
+    mov edx, "PAMS"
+    cmp eax, edx
+    jne .error
+    test ebx, ebx
+    je .error
+    jmp .start
+    
+    .next:
+        mov edx, "PAMS"
+        mov ecx, 24
+        mov eax, 0xE820
+        int 0x15
+    
+    .start:
+        jcxz .skip_ent
+        mov ecx, [es:di + 8]
+        or ecx, [es:di + 12]
+        jz .skip_ent
+    
+    .good:
+        inc bp
+        add di, 24
+    
+    .skip_ent:
+        test ebx, ebx
+        jz .done
+        jmp .next
+    
+        
+    .error:
+        stc
+    .done:
+        mov [memmap_], bp
+        clc
     cli
     lgdt [_GDT]
     mov eax, cr0

@@ -24,7 +24,7 @@ void put_kb(uint8_t key) {
         last_pressed_key = '\n';
     } else if (key == BACKSPACE_PRESSED) {
         if (curx > 0) {
-            curx -= 8;
+            curx -= 8; // TODO: make write char work both in text and graphics mode, but I'll mostly use graphics
             write_char('\b', default_color[1], curx, cury);
         } else {
             curx = WIDTH - 1;

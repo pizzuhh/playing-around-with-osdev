@@ -1,11 +1,12 @@
 #include "stdio.h"
 #include "stdbool.h"
 
+
 size_t terminal_row;
 size_t terminal_column;
 uint8_t terminal_color;
 uint16_t* terminal_buffer;
-
+extern uint8_t graphics_mode;
 
 
 
@@ -87,20 +88,6 @@ void terminal_writestring(const char* data)
     return;
 }
 
-static void print_str(char *str, char pad_char, int width) {
-    if (width <= 0) {
-        terminal_writestring(str);
-        return;
-    }
-    size_t len = strlen(str);
-    char buffer[(len + width) + 1];
-    memset(buffer, pad_char, (len + width));
-    strcpy(buffer + (width - len), str);
-    buffer[(len + width) + 1] = '\0';
-    terminal_writestring(buffer);
-    return;
-}
-
 static char *convert(unsigned int num, int base, int pad_width, char pad_char) {
     static char Representation[] = "0123456789ABCDEF";
     static char buffer[1024];
@@ -122,7 +109,7 @@ static char *convert(unsigned int num, int base, int pad_width, char pad_char) {
     return ptr;
 }
 
-void vsprintf(char *s, const char *fmt, va_list list) {
+static void vsprintf(char *s, const char *fmt, va_list list) {
     /*
     0 - normal state - print the character
     1 - parse state - parse the % stuff
@@ -187,14 +174,11 @@ void vsprintf(char *s, const char *fmt, va_list list) {
     update_cursor(terminal_column, terminal_row);
 }
 
-void printf(const char *fmt, ...) {
+static void printt(const char *fmt, va_list list) {
     char buffer[1024];
-    va_list list;
-    va_start(list, fmt);
     vsprintf(buffer, fmt, list);
     terminal_writestring(buffer);
     memset(buffer, 0, 1024);
-    va_end(list);
 }
 
 void prints(const char *fmt, ...) {
@@ -207,14 +191,28 @@ void prints(const char *fmt, ...) {
     va_end(list);
 }
 
-void printv(uint8_t color, const char *fmt, ...) {
+static void printv(uint8_t color, const char *fmt, va_list list) {
     char buffer[1024];
-    va_list list;
-    va_start(list, fmt);
     vsprintf(buffer, fmt, list);
     write_string(buffer, color);
     memset(buffer, 0, 1024);
-    va_end(list);
+}
+
+void printk(const char *fmt, ...) {
+    va_list list;
+    va_start(list, fmt);
+    if (graphics_mode == 1)
+        printv(default_color[1], fmt, list);
+    else
+        printt(fmt, list);
+}
+
+
+void putchar(const char c) {
+    if (graphics_mode == 1)
+        v_putchar(c);
+    else
+        terminal_putchar(c, terminal_color);
 }
 
 void printe(const char *exception) {

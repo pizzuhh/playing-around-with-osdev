@@ -65,5 +65,5 @@ void enable_rtc(void) {
 void print_time(bool serial) {
     uint16_t yr = 2000 + global_time.year;
     if (serial) prints("%d-%02d-%02dT%02d:%02d:%02d\n", yr, global_time.month, global_time.day, global_time.hours, global_time.minutes, global_time.seconds);
-    else printf("%d-%02d-%02dT%02d:%02d:%02d\n", yr, global_time.month, global_time.day, global_time.hours, global_time.minutes, global_time.seconds);
+    else printk("%d-%02d-%02dT%02d:%02d:%02d\n", yr, global_time.month, global_time.day, global_time.hours, global_time.minutes, global_time.seconds);
 }

@@ -19,6 +19,8 @@ File used to define *helper* functions and to keep kerne.c somewhat clean.
 #include "include/rtc.h"
 #include "include/graphics.h"
 
+extern uint8_t graphics_mode;
+
 /*Put this at the beginning of _kstart. Set ups the IDT and other stuff we need. */
 #define KINIT\
     pit_freq = 1193;\

@@ -15,7 +15,7 @@ void clear_screen(void);
 void putpixel(uint32_t x, uint32_t y, uint8_t color);
 void draw(uint8_t (*icon)[8], uint8_t color, uint32_t sx, uint32_t sy);
 void fill_rect(uint32_t sx, uint32_t sy, uint32_t ex, uint32_t ey, uint8_t color);
-void putchar(char c);
+void v_putchar(char c);
 void write_char(uint8_t chr, uint8_t color, uint32_t x, uint32_t y);
 void write_string(char *str, uint8_t color);
 void finish(void);

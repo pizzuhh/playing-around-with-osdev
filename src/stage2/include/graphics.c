@@ -92,7 +92,7 @@ void write_string(char *str, uint8_t color) {
     
 }
 
-void putchar(char c) {
+void v_putchar(char c) {
     // check for special characters line \n before drawing
     if (c == '\n') {
         curx = 0;
