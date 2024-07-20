@@ -18,5 +18,6 @@ void fill_rect(uint32_t sx, uint32_t sy, uint32_t ex, uint32_t ey, uint8_t color
 void v_putchar(char c);
 void write_char(uint8_t chr, uint8_t color, uint32_t x, uint32_t y);
 void write_string(char *str, uint8_t color);
+void scroll(uint8_t direction);
 void finish(void);
 #endif

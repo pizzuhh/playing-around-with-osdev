@@ -55,7 +55,7 @@ main:
     ; read the disk
     cld
     mov ah, 0x02
-    mov al, 0x40
+    mov al, 0x30
     mov ch, 0x00
     mov cl, 0x02
     mov dh, 0x00

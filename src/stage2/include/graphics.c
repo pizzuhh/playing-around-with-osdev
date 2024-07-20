@@ -28,8 +28,11 @@ void clear_screen(void) {
 }
 
 // TODO: Add a way to save the old buffer and view it on PAGEUP; restore the current one on PAGEDOWN
-void ss(void) {
-    memcpy((void*)VGA_MEMORY, oldbuff, WIDTH * HEIGHT * COLOR_DEPTH);
+void scroll(uint8_t direction) {
+    if (direction == 1)
+        memcpy((void*)VGA_MEMORY, oldbuff, WIDTH * HEIGHT * COLOR_DEPTH);
+    else 
+        memcpy((void*)VGA_MEMORY, backbuff, WIDTH * HEIGHT * COLOR_DEPTH);
 }
 
 void draw(uint8_t icon[8][8], uint8_t color, uint32_t sx, uint32_t sy) {

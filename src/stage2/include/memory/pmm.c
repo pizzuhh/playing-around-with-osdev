@@ -74,7 +74,7 @@ void *alloc_blocks(uint32_t nblocks) {
     return (void*)address;
 }
 void free_blocks(void* address, uint32_t nblocks) {
-    int32_t start_addr = *(uint32_t*)address / BLOCK_SIZE;
+    int32_t start_addr = (uint32_t)address / BLOCK_SIZE;
     for (uint32_t i = 0; i < nblocks; i++)
         unset_block(start_addr + i);
     used_blocks -= nblocks;

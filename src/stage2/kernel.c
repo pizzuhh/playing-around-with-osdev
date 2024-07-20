@@ -1,8 +1,3 @@
-#include "drivers/keyboard.h"
-#include "drivers/serial.h"
-#include "include/libc/stdio.h"
-#include "include/pit.h"
-#include "include/rtc.h"
 #include "krn.h"
 
 uint8_t graphics_mode = 0;
@@ -84,14 +79,15 @@ void _kstart() {
     finish();
     for(;;) {
         char *in = get_input();
-        if (!strcmp(in, "test pmm")) {
+        if (!strcmp(in, "print memory")) {
             print_memory(1);
-            char *a = alloc_blocks(1);
-            strcpy(a, "cat");
-            printk("%s\n\n", a);
-            printk("a: %08x\n", (uint32_t)a);
+            printk("TEST\n");
+            char *str = alloc_blocks(3);
+            strcpy(str, "CAT CAT DOG DOG!!!!!!!!!!!!");
+            printk("str: %s\nstr_addr: %08x\n", str, (uint32_t)str);
             print_memory(0);
-            free_blocks(a, 1);
+            free_blocks(str, 3);
+            printk("Freed\n");
             print_memory(0);
         }
     }

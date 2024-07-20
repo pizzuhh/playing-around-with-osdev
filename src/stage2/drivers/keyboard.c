@@ -12,7 +12,17 @@ char last_pressed_key = '\0';
 char keycache[256];
 uint8_t kci = 0;
 
-void put_kb(uint8_t key) {
+static void put_kb(uint8_t special, uint8_t key) {
+    if (special == 1) { // E0 stuff. E.g. page up/down
+        switch (key) {
+            case 0x49:
+                scroll(1);
+                break;
+            case 0x051:
+                scroll(0);
+                break;
+        }
+    }
     if (key == SQ_BRACKETO_PRESSED) {
         putchar('[');
         last_pressed_key = '[';
@@ -91,11 +101,20 @@ void put_kb(uint8_t key) {
     }
 }
 
+uint8_t e0 = 0;
 
 __attribute__((interrupt)) void kbd_handler(interrupt_frame *frame) {
     if (wait_key) {wait_key = 0; return;}
     uint8_t code = inb(0x60);
-    put_kb(code);
+    if(code == 0xE0) {
+        e0 = 1;
+        PIC_sendEOI(1);
+        return;
+    }
+    if (e0 == 1)
+        put_kb(1, code);
+    else 
+        put_kb(0, code);
     if (last_pressed_key != '\0') {
         if (kci >= 255) kci = 0; // Prevent overflow. We probably wont need the last 256 keys lol
         keycache[kci] = last_pressed_key;

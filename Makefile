@@ -45,6 +45,9 @@ $(DISK_FILE): $(BOOT_BIN) $(KERNEL_BIN)
 	@dd if=/dev/zero of=$@ bs=512 count=2880
 	@dd if=./src/boot/boot.bin of=$@ bs=512 conv=notrunc
 	@dd if=$(KERNEL_BIN) of=$@ bs=512 conv=notrunc seek=1
+	@size=$$(wc -c < $(KERNEL_BIN));\
+	SECTORS=$$(((size + 511) / 512));\
+	echo "$@" "0x$$(printf '%X' $$SECTORS)"
 
 $(BOOTDIR)/%.bin: $(BOOTDIR)/%.asm
 	@echo "ASM $<"
