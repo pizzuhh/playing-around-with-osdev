@@ -22,6 +22,9 @@ LIBC_OFILES = $(patsubst %.c, %.o, $(LIBC_CFILES))
 I_CFILES = $(wildcard $(INCLUDE_DIR)/*.c)
 I_OFILES = $(patsubst %.c, %.o, $(I_CFILES))
 
+M_CFILES = $(wildcard $(INCLUDE_DIR)/memory/*.c)
+M_OFILES = $(patsubst %.c, %.o, $(M_CFILES))
+
 DRIVER_DIR = $(SRC)/stage2/drivers
 D_CFILES = $(wildcard $(DRIVER_DIR)/*.c)
 D_OFILES = $(patsubst %.c, %.o, $(D_CFILES))
@@ -47,9 +50,9 @@ $(BOOTDIR)/%.bin: $(BOOTDIR)/%.asm
 	@echo "ASM $<"
 	@$(ASM) $(ASMFLAGS) -o $@ $<
 
-$(KERNEL_BIN): $(K_OFILES) $(KERNELDIR)/loader.o $(LIBC_OFILES) $(I_OFILES) $(D_OFILES)
+$(KERNEL_BIN): $(K_OFILES) $(KERNELDIR)/loader.o $(LIBC_OFILES) $(I_OFILES) $(D_OFILES) $(M_OFILES)
 	@echo "LD $<"
-	@$(LD) $(LDFLAGS) $(K_OFILES) $(LIBC_OFILES) $(I_OFILES) $(D_OFILES) -o $(KERNEL_ELF) 
+	@$(LD) $(LDFLAGS) $(K_OFILES) $(LIBC_OFILES) $(I_OFILES) $(D_OFILES) $(M_OFILES) -o $(KERNEL_ELF) 
 	i686-elf-objcopy -O binary $(KERNEL_ELF) $@
 
 $(LIBCDIR)/%.o: $(LIBCDIR)/%.c
@@ -64,6 +67,10 @@ $(INCLUDE_DIR)/%.o: $(INCLUDE_DIR)/%.c
 	@echo "CC $<"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
+$(INCLUDE_DIR)/memory/%.o: $(INCLUDE_DIR)/memory/%.c
+	@echo "CC $<"
+	@$(CC) $(CFLAGS) -c $< -o $@
+	
 $(KERNELDIR)/loader.o: $(K_ASMFILES)
 	@echo "ASM $<"
 	@$(ASM) -f elf $< -o $@

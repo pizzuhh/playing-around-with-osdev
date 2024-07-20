@@ -18,8 +18,22 @@ File used to define *helper* functions and to keep kerne.c somewhat clean.
 #include "include/pit.h"
 #include "include/rtc.h"
 #include "include/graphics.h"
+#include "include/memory/pmm.h"
 
 extern uint8_t graphics_mode;
+
+
+typedef struct {
+    uint64_t base_address;
+    uint64_t len;
+    uint32_t type;
+    uint32_t acpi;
+} __attribute__((packed)) SMAP_mem;
+
+uint32_t num_smap_entries = 0;
+uint32_t total_mem = 0;
+SMAP_mem *SMAP_entry;
+const uint32_t MEMMAP_AREA = 0x50000;
 
 /*Put this at the beginning of _kstart. Set ups the IDT and other stuff we need. */
 #define KINIT\
@@ -47,6 +61,17 @@ extern uint8_t graphics_mode;
     set_pit_mode_frequency(0, MODE2, pit_freq);\
     enable_rtc();\
     init_serial();\
+    num_smap_entries = *(uint32_t*)0x8000;\
+    SMAP_entry = (SMAP_mem*)0x8004;\
+    SMAP_entry += num_smap_entries - 1;\
+    total_mem = SMAP_entry->base_address + SMAP_entry->len - 1;\
+    initialize_physical_memory_manager(MEMMAP_AREA, total_mem);\
+    SMAP_entry = (SMAP_mem*)0x8004;\
+    for (uint32_t i = 0; i < num_smap_entries; i++, SMAP_entry++)\
+        if (SMAP_entry->type == 1)\
+            initialize_memory_region(SMAP_entry->base_address, SMAP_entry->len);\
+     deinitialize_memory_region(0x1000, 0x9000);/* Reserved memory for the kernel*/\
+     deinitialize_memory_region(MEMMAP_AREA, max_blocks / BLOCKS_PER_BYTE);\
 
 // https://wiki.osdev.org/Reboot#Short_code_to_do_a_8042_reset
 void reboot(void)

@@ -39,49 +39,62 @@ uint8_t heart[8][8] = {
     {0,0,0,0,0,0,0,0},
 };
 
-typedef struct {
-    uint64_t base_address;
-    uint64_t len;
-    uint32_t type;
-    uint32_t acpi;
-} __attribute__((packed)) SMAP_mem;
 
-
-
-void print_memory(void) {
-    printk("Detected memory: \n");
+void print_memory(bool print_detected) {
+    uint8_t tmp = default_color[1];
+    default_color[1] = 0x0C;
     uint32_t num_entries = *(uint32_t*)0x8000;
     SMAP_mem *mem = (SMAP_mem*)0x8004;
-    for (uint32_t i = 0; i < num_entries; i++) {
-        printk("Region: %08x", mem->base_address);
-        printk("  Size: %08x  ", mem->len);
-        switch (mem->type) {
-            case 1:
-                printk("(A)\n");
-                break;
-            default:
-            case 2:
-                printk("(R)\n");
-                break;
-            case 3:
-                printk("(AR)\n");
-                break;
-            case 4:
-                printk("(ANM)\n");
-                break;
+    if (print_detected) {
+        for (uint32_t i = 0; i < num_entries; i++) {
+            printk("Region: 0x%08x ", mem->base_address);
+            printk("Size: 0x%08x ", mem->len);
+            switch (mem->type) {
+                case 1:
+                    printk("(A)\n");
+                    break;
+                default:
+                case 2:
+                    printk("(R)\n");
+                    break;
+                case 3:
+                    printk("(AR)\n");
+                    break;
+                case 4:
+                    printk("(ANM)\n");
+                    break;
+            }
+            mem++;
         }
-        mem++;
-    }
+    } else mem += num_entries;
+    mem--;
+    
+    printk("Total Memory: 0x%08x\n", (mem->base_address + mem->len - 1));
+    printk("Used Memory:  0x%08x\n", used_blocks);
+    printk("Free Memory:  0x%08x\n", max_blocks - used_blocks);
+    default_color[1] = tmp;
 }
+
 
 #if 1
 void _kstart() {
     graphics_mode = 1;
     KINIT
     init_screen(0x00, 0x0F);
-    printk("Hello world\n");
     finish();
-    print_memory();
+    for(;;) {
+        char *in = get_input();
+        if (!strcmp(in, "test pmm")) {
+            print_memory(1);
+            char *a = alloc_blocks(1);
+            strcpy(a, "cat");
+            printk("%s\n\n", a);
+            printk("a: %08x\n", (uint32_t)a);
+            print_memory(0);
+            free_blocks(a, 1);
+            print_memory(0);
+        }
+    }
 }
 #endif
 

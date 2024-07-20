@@ -8,6 +8,7 @@ uint32_t curx = 0, cury = 0;
 
 
 uint8_t backbuff[WIDTH * HEIGHT * COLOR_DEPTH];
+uint8_t oldbuff[WIDTH * HEIGHT * COLOR_DEPTH];
 
 void putpixel(uint32_t x, uint32_t y, uint8_t color) {
     if (x > WIDTH || y > HEIGHT) return;
@@ -22,7 +23,13 @@ void init_screen(uint8_t bg_color, uint8_t fg_color) {
 }
 
 void clear_screen(void) {
+    memcpy(oldbuff, (void*)VGA_MEMORY, WIDTH * HEIGHT * COLOR_DEPTH);
     memset(backbuff, default_color[0], WIDTH * HEIGHT * COLOR_DEPTH);
+}
+
+// TODO: Add a way to save the old buffer and view it on PAGEUP; restore the current one on PAGEDOWN
+void ss(void) {
+    memcpy((void*)VGA_MEMORY, oldbuff, WIDTH * HEIGHT * COLOR_DEPTH);
 }
 
 void draw(uint8_t icon[8][8], uint8_t color, uint32_t sx, uint32_t sy) {
@@ -78,6 +85,11 @@ void write_string(char *str, uint8_t color) {
         if (curx >= WIDTH) {
             curx = 0;
             cury += 8;
+        }
+        if (cury >= HEIGHT) {
+            curx = cury = 0;
+            clear_screen();
+            finish();
         }
         if (*str == '\n') {
             curx = 0;

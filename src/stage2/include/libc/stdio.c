@@ -171,6 +171,7 @@ static void vsprintf(char *s, const char *fmt, va_list list) {
         }
         fmt++;
     }
+    *s = '\0';
     update_cursor(terminal_column, terminal_row);
 }
 
