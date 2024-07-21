@@ -77,13 +77,15 @@ void _kstart() {
     KINIT
     init_screen(0x00, 0x0F);
     finish();
+    printk("Commands: 'print memory'\nPAGE UP to scoll up\nPAGE DOWN to scroll down\n\n");
     for(;;) {
+        printk("> ");
         char *in = get_input();
         if (!strcmp(in, "print memory")) {
             print_memory(1);
             printk("TEST\n");
-            char *str = alloc_blocks(3);
-            strcpy(str, "CAT CAT DOG DOG!!!!!!!!!!!!");
+            char *str = alloc_blocks(1);
+            strcpy(str, "Test string");
             printk("str: %s\nstr_addr: %08x\n", str, (uint32_t)str);
             print_memory(0);
             free_blocks(str, 3);
