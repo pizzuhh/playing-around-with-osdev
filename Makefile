@@ -3,11 +3,11 @@ ASMFLAGS = -f bin
 CC = i686-elf-gcc
 CFLAGS = -ffreestanding -nostdlib -m32 -mgeneral-regs-only -I./src/stage2/include -g
 LD = i686-elf-ld
-LDFLAGS = -T $(SRC)/stage2/link.ld $(KERNELDIR)/loader.o -Map map.map
+LDFLAGS = -T $(KERNELDIR)/link.ld $(KERNELDIR)/loader.o -Map map.map
 
 SRC = ./src
 BOOTDIR = $(SRC)/boot
-KERNELDIR = $(SRC)/stage2
+KERNELDIR = $(SRC)/kernel
 INCLUDE_DIR = $(KERNELDIR)/include
 LIBCDIR = $(INCLUDE_DIR)/libc
 
@@ -25,14 +25,14 @@ I_OFILES = $(patsubst %.c, %.o, $(I_CFILES))
 M_CFILES = $(wildcard $(INCLUDE_DIR)/memory/*.c)
 M_OFILES = $(patsubst %.c, %.o, $(M_CFILES))
 
-DRIVER_DIR = $(SRC)/stage2/drivers
+DRIVER_DIR = $(KERNELDIR)/drivers
 D_CFILES = $(wildcard $(DRIVER_DIR)/*.c)
 D_OFILES = $(patsubst %.c, %.o, $(D_CFILES))
 
 BOOT_SRC = $(wildcard $(BOOTDIR)/*.asm)
 BOOT_BIN = $(patsubst %.asm, %.bin, $(BOOT_SRC))
-KERNEL_BIN = $(SRC)/stage2/kernel.bin
-KERNEL_ELF = $(SRC)/stage2/kernel.elf
+KERNEL_BIN = $(KERNELDIR)/kernel.bin
+KERNEL_ELF = $(KERNELDIR)/kernel.elf
 
 DISK_FILE = disk.img
 
