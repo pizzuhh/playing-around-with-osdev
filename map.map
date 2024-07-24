@@ -10,200 +10,201 @@ Linker script and memory map
 
                 0x00020000                        . = 0x20000
 
-.text           0x00020000     0x2f60
+.text           0x00020000     0x2fec
  *(.text)
  .text          0x00020000        0x9 ./src/kernel/loader.o
- .text          0x00020009      0x616 ./src/kernel/kernel.o
+ .text          0x00020009      0x6a2 ./src/kernel/kernel.o
                 0x00020009                div_by_zero
                 0x00020045                overflow
                 0x0002006d                invalid_opcode
                 0x00020117                reboot
                 0x00020155                dbg
                 0x000201a6                print_memory
-                0x0002031c                _kstart
- .text          0x0002061f      0xb46 ./src/kernel/include/libc/stdio.o
-                0x0002061f                terminal_initialize
-                0x00020720                terminal_clear
-                0x00020808                terminal_setcolor
-                0x00020820                terminal_putentryat
-                0x000208c5                terminal_putchar
-                0x00020a88                terminal_write
-                0x00020aed                terminal_writestring_color
-                0x00020b20                terminal_writestring
-                0x00020e43                prints
-                0x00020efd                printk
-                0x00020f48                putchar
-                0x00020f8f                printe
-                0x00020fb5                printd
-                0x00021022                disable_cursor
-                0x0002104f                enable_cursor
-                0x000210e6                update_cursor
- .text          0x00021165      0x19f ./src/kernel/include/libc/string.o
-                0x00021165                strlen
-                0x0002119a                strcmp
-                0x000211d9                strcpy
-                0x00021209                strcat
-                0x00021249                memset
-                0x000212b2                memcpy
- .text          0x00021304      0x47a ./src/kernel/include/graphics.o
-                0x00021304                putpixel
-                0x0002134d                init_screen
-                0x00021393                clear_screen
-                0x000213d4                scroll
-                0x0002141d                draw
-                0x00021491                fill_rect
-                0x000214de                finish
-                0x0002157d                write_char
-                0x00021623                write_string
-                0x000216f4                v_putchar
- .text          0x0002177e      0x161 ./src/kernel/include/idt.o
-                0x0002177e                default_exception_handler
-                0x00021793                default_exception_handler_err_code
-                0x000217b1                default_interrupt_handler
-                0x000217c6                set_idt_descriptor
-                0x0002181e                init_idt
- .text          0x000218df       0x93 ./src/kernel/include/io.o
-                0x000218df                outb
-                0x00021900                inb
-                0x0002191d                outw
-                0x0002193e                inw
-                0x0002195d                io_wait
- .text          0x00021972      0x233 ./src/kernel/include/pic.o
-                0x00021972                PIC_sendEOI
-                0x000219a8                pic_disable
-                0x000219d8                IRQ_set_mask
-                0x00021a3e                IRQ_clear_mask
-                0x00021aa6                remap_PIC
- .text          0x00021ba5      0x1d3 ./src/kernel/include/pit.o
-                0x00021ba5                timer_irq_handler
-                0x00021bf2                msleep
-                0x00021c41                set_pit_mode_frequency
-                0x00021cd2                StartSound
-                0x00021d22                StopSound
-                0x00021d4e                beep
- .text          0x00021d78      0x4f5 ./src/kernel/include/rtc.o
-                0x00021de6                rtc_handler
-                0x00022153                enable_rtc
-                0x000221a3                print_time
- .text          0x0002226d      0x2aa ./src/kernel/drivers/ata.o
-                0x0002226d                ata_write_sector
-                0x000223b8                ata_read_sector
- .text          0x00022517      0x578 ./src/kernel/drivers/keyboard.o
-                0x0002293a                kbd_handler
-                0x00022a28                get_input
- .text          0x00022a8f      0x17a ./src/kernel/drivers/serial.o
-                0x00022a8f                init_serial
-                0x00022b99                write_char_serial
-                0x00022bca                write_string_serial
- .text          0x00022c09      0x357 ./src/kernel/include/memory/pmm.o
-                0x00022dbd                initialize_physical_memory_manager
-                0x00022e06                initialize_memory_region
-                0x00022e56                deinitialize_memory_region
-                0x00022e9d                alloc_blocks
-                0x00022f1b                free_blocks
+                0x0002031c                aaa
+                0x00020375                _kstart
+ .text          0x000206ab      0xb46 ./src/kernel/include/libc/stdio.o
+                0x000206ab                terminal_initialize
+                0x000207ac                terminal_clear
+                0x00020894                terminal_setcolor
+                0x000208ac                terminal_putentryat
+                0x00020951                terminal_putchar
+                0x00020b14                terminal_write
+                0x00020b79                terminal_writestring_color
+                0x00020bac                terminal_writestring
+                0x00020ecf                prints
+                0x00020f89                printk
+                0x00020fd4                putchar
+                0x0002101b                printe
+                0x00021041                printd
+                0x000210ae                disable_cursor
+                0x000210db                enable_cursor
+                0x00021172                update_cursor
+ .text          0x000211f1      0x19f ./src/kernel/include/libc/string.o
+                0x000211f1                strlen
+                0x00021226                strcmp
+                0x00021265                strcpy
+                0x00021295                strcat
+                0x000212d5                memset
+                0x0002133e                memcpy
+ .text          0x00021390      0x47a ./src/kernel/include/graphics.o
+                0x00021390                putpixel
+                0x000213d9                init_screen
+                0x0002141f                clear_screen
+                0x00021460                scroll
+                0x000214a9                draw
+                0x0002151d                fill_rect
+                0x0002156a                finish
+                0x00021609                write_char
+                0x000216af                write_string
+                0x00021780                v_putchar
+ .text          0x0002180a      0x161 ./src/kernel/include/idt.o
+                0x0002180a                default_exception_handler
+                0x0002181f                default_exception_handler_err_code
+                0x0002183d                default_interrupt_handler
+                0x00021852                set_idt_descriptor
+                0x000218aa                init_idt
+ .text          0x0002196b       0x93 ./src/kernel/include/io.o
+                0x0002196b                outb
+                0x0002198c                inb
+                0x000219a9                outw
+                0x000219ca                inw
+                0x000219e9                io_wait
+ .text          0x000219fe      0x233 ./src/kernel/include/pic.o
+                0x000219fe                PIC_sendEOI
+                0x00021a34                pic_disable
+                0x00021a64                IRQ_set_mask
+                0x00021aca                IRQ_clear_mask
+                0x00021b32                remap_PIC
+ .text          0x00021c31      0x1d3 ./src/kernel/include/pit.o
+                0x00021c31                timer_irq_handler
+                0x00021c7e                msleep
+                0x00021ccd                set_pit_mode_frequency
+                0x00021d5e                StartSound
+                0x00021dae                StopSound
+                0x00021dda                beep
+ .text          0x00021e04      0x4f5 ./src/kernel/include/rtc.o
+                0x00021e72                rtc_handler
+                0x000221df                enable_rtc
+                0x0002222f                print_time
+ .text          0x000222f9      0x2aa ./src/kernel/drivers/ata.o
+                0x000222f9                ata_write_sector
+                0x00022444                ata_read_sector
+ .text          0x000225a3      0x578 ./src/kernel/drivers/keyboard.o
+                0x000229c6                kbd_handler
+                0x00022ab4                get_input
+ .text          0x00022b1b      0x17a ./src/kernel/drivers/serial.o
+                0x00022b1b                init_serial
+                0x00022c25                write_char_serial
+                0x00022c56                write_string_serial
+ .text          0x00022c95      0x357 ./src/kernel/include/memory/pmm.o
+                0x00022e49                initialize_physical_memory_manager
+                0x00022e92                initialize_memory_region
+                0x00022ee2                deinitialize_memory_region
+                0x00022f29                alloc_blocks
+                0x00022fa7                free_blocks
 
-.iplt           0x00022f60        0x0
- .iplt          0x00022f60        0x0 ./src/kernel/loader.o
+.iplt           0x00022fec        0x0
+ .iplt          0x00022fec        0x0 ./src/kernel/loader.o
 
-.rodata         0x00022f60      0x297
+.rodata         0x00022ff0      0x29f
  *(.rodata)
- .rodata        0x00022f60      0x169 ./src/kernel/kernel.o
-                0x00022f90                MEMMAP_AREA
- *fill*         0x000230c9        0x7 
- .rodata        0x000230d0       0x94 ./src/kernel/include/libc/stdio.o
- *fill*         0x00023164        0x4 
- .rodata        0x00023168       0x10 ./src/kernel/include/pit.o
- .rodata        0x00023178       0x2d ./src/kernel/include/rtc.o
- *fill*         0x000231a5        0x3 
- .rodata        0x000231a8       0x14 ./src/kernel/drivers/ata.o
- *fill*         0x000231bc        0x4 
- .rodata        0x000231c0       0x37 ./src/kernel/drivers/keyboard.o
+ .rodata        0x00022ff0      0x176 ./src/kernel/kernel.o
+                0x00023020                MEMMAP_AREA
+ *fill*         0x00023166        0x2 
+ .rodata        0x00023168       0x94 ./src/kernel/include/libc/stdio.o
+ *fill*         0x000231fc        0x4 
+ .rodata        0x00023200       0x10 ./src/kernel/include/pit.o
+ .rodata        0x00023210       0x2d ./src/kernel/include/rtc.o
+ *fill*         0x0002323d        0x3 
+ .rodata        0x00023240       0x14 ./src/kernel/drivers/ata.o
+ *fill*         0x00023254        0x4 
+ .rodata        0x00023258       0x37 ./src/kernel/drivers/keyboard.o
 
-.rel.dyn        0x000231f8        0x0
- .rel.got       0x000231f8        0x0 ./src/kernel/loader.o
- .rel.iplt      0x000231f8        0x0 ./src/kernel/loader.o
+.rel.dyn        0x00023290        0x0
+ .rel.got       0x00023290        0x0 ./src/kernel/loader.o
+ .rel.iplt      0x00023290        0x0 ./src/kernel/loader.o
 
-.data           0x00023200      0x8d0
+.data           0x000232a0      0x8d0
  *(.data)
- .data          0x00023200       0x80 ./src/kernel/kernel.o
-                0x00023200                x
-                0x00023240                heart
- .data          0x00023280       0x11 ./src/kernel/include/libc/stdio.o
- .data          0x00023291        0x0 ./src/kernel/include/libc/string.o
- *fill*         0x00023291        0xf 
- .data          0x000232a0      0x820 ./src/kernel/include/graphics.o
-                0x000232a0                default_color
-                0x000232c0                g_8x8_font
- .data          0x00023ac0        0x0 ./src/kernel/include/idt.o
- .data          0x00023ac0        0x0 ./src/kernel/include/io.o
- .data          0x00023ac0        0x0 ./src/kernel/include/pic.o
- .data          0x00023ac0        0x0 ./src/kernel/include/pit.o
- .data          0x00023ac0        0x0 ./src/kernel/include/rtc.o
- .data          0x00023ac0        0x0 ./src/kernel/drivers/ata.o
- .data          0x00023ac0       0x10 ./src/kernel/drivers/keyboard.o
-                0x00023ac0                __qwertyuiop
-                0x00023ac4                __asdfghjkl
-                0x00023ac8                __zxcvbnm
-                0x00023acc                __num
- .data          0x00023ad0        0x0 ./src/kernel/drivers/serial.o
- .data          0x00023ad0        0x0 ./src/kernel/include/memory/pmm.o
+ .data          0x000232a0       0x80 ./src/kernel/kernel.o
+                0x000232a0                x
+                0x000232e0                heart
+ .data          0x00023320       0x11 ./src/kernel/include/libc/stdio.o
+ .data          0x00023331        0x0 ./src/kernel/include/libc/string.o
+ *fill*         0x00023331        0xf 
+ .data          0x00023340      0x820 ./src/kernel/include/graphics.o
+                0x00023340                default_color
+                0x00023360                g_8x8_font
+ .data          0x00023b60        0x0 ./src/kernel/include/idt.o
+ .data          0x00023b60        0x0 ./src/kernel/include/io.o
+ .data          0x00023b60        0x0 ./src/kernel/include/pic.o
+ .data          0x00023b60        0x0 ./src/kernel/include/pit.o
+ .data          0x00023b60        0x0 ./src/kernel/include/rtc.o
+ .data          0x00023b60        0x0 ./src/kernel/drivers/ata.o
+ .data          0x00023b60       0x10 ./src/kernel/drivers/keyboard.o
+                0x00023b60                __qwertyuiop
+                0x00023b64                __asdfghjkl
+                0x00023b68                __zxcvbnm
+                0x00023b6c                __num
+ .data          0x00023b70        0x0 ./src/kernel/drivers/serial.o
+ .data          0x00023b70        0x0 ./src/kernel/include/memory/pmm.o
 
-.got            0x00023ad0        0x0
- .got           0x00023ad0        0x0 ./src/kernel/loader.o
+.got            0x00023b70        0x0
+ .got           0x00023b70        0x0 ./src/kernel/loader.o
 
-.got.plt        0x00023ad0        0x0
- .got.plt       0x00023ad0        0x0 ./src/kernel/loader.o
+.got.plt        0x00023b70        0x0
+ .got.plt       0x00023b70        0x0 ./src/kernel/loader.o
 
-.igot.plt       0x00023ad0        0x0
- .igot.plt      0x00023ad0        0x0 ./src/kernel/loader.o
+.igot.plt       0x00023b70        0x0
+ .igot.plt      0x00023b70        0x0 ./src/kernel/loader.o
 
-.bss            0x00023ae0    0x201b0
+.bss            0x00023b80    0x201b0
  *(.bss)
- .bss           0x00023ae0       0x10 ./src/kernel/kernel.o
-                0x00023ae0                num_smap_entries
-                0x00023ae4                total_mem
-                0x00023ae8                SMAP_entry
-                0x00023aec                graphics_mode
-                0x00023aee                pit_freq
- *fill*         0x00023af0       0x10 
- .bss           0x00023b00      0x420 ./src/kernel/include/libc/stdio.o
-                0x00023b00                terminal_row
-                0x00023b08                terminal_column
-                0x00023b10                terminal_color
-                0x00023b14                terminal_buffer
- .bss           0x00023f20        0x0 ./src/kernel/include/libc/string.o
- .bss           0x00023f20    0x1f420 ./src/kernel/include/graphics.o
-                0x00023f20                curx
-                0x00023f24                cury
-                0x00023f40                backbuff
-                0x00033940                oldbuff
- .bss           0x00043340      0x806 ./src/kernel/include/idt.o
-                0x00043340                idt
-                0x00043b40                idtr
- .bss           0x00043b46        0x0 ./src/kernel/include/io.o
- .bss           0x00043b46        0x0 ./src/kernel/include/pic.o
- *fill*         0x00043b46        0x2 
- .bss           0x00043b48        0x8 ./src/kernel/include/pit.o
-                0x00043b48                sleep_counter
-                0x00043b4c                ticks
- .bss           0x00043b50        0xc ./src/kernel/include/rtc.o
-                0x00043b50                global_time
- .bss           0x00043b5c        0x0 ./src/kernel/drivers/ata.o
- *fill*         0x00043b5c        0x4 
- .bss           0x00043b60      0x122 ./src/kernel/drivers/keyboard.o
-                0x00043b60                wait_key
-                0x00043b64                a
-                0x00043b68                last_pressed_key
-                0x00043b80                keycache
-                0x00043c80                kci
-                0x00043c81                e0
- .bss           0x00043c82        0x1 ./src/kernel/drivers/serial.o
-                0x00043c82                is_serial_on
- *fill*         0x00043c83        0x1 
- .bss           0x00043c84        0xc ./src/kernel/include/memory/pmm.o
-                0x00043c84                memory_map
-                0x00043c88                max_blocks
-                0x00043c8c                used_blocks
+ .bss           0x00023b80       0x10 ./src/kernel/kernel.o
+                0x00023b80                num_smap_entries
+                0x00023b84                total_mem
+                0x00023b88                SMAP_entry
+                0x00023b8c                graphics_mode
+                0x00023b8e                pit_freq
+ *fill*         0x00023b90       0x10 
+ .bss           0x00023ba0      0x420 ./src/kernel/include/libc/stdio.o
+                0x00023ba0                terminal_row
+                0x00023ba8                terminal_column
+                0x00023bb0                terminal_color
+                0x00023bb4                terminal_buffer
+ .bss           0x00023fc0        0x0 ./src/kernel/include/libc/string.o
+ .bss           0x00023fc0    0x1f420 ./src/kernel/include/graphics.o
+                0x00023fc0                curx
+                0x00023fc4                cury
+                0x00023fe0                backbuff
+                0x000339e0                oldbuff
+ .bss           0x000433e0      0x806 ./src/kernel/include/idt.o
+                0x000433e0                idt
+                0x00043be0                idtr
+ .bss           0x00043be6        0x0 ./src/kernel/include/io.o
+ .bss           0x00043be6        0x0 ./src/kernel/include/pic.o
+ *fill*         0x00043be6        0x2 
+ .bss           0x00043be8        0x8 ./src/kernel/include/pit.o
+                0x00043be8                sleep_counter
+                0x00043bec                ticks
+ .bss           0x00043bf0        0xc ./src/kernel/include/rtc.o
+                0x00043bf0                global_time
+ .bss           0x00043bfc        0x0 ./src/kernel/drivers/ata.o
+ *fill*         0x00043bfc        0x4 
+ .bss           0x00043c00      0x122 ./src/kernel/drivers/keyboard.o
+                0x00043c00                wait_key
+                0x00043c04                a
+                0x00043c08                last_pressed_key
+                0x00043c20                keycache
+                0x00043d20                kci
+                0x00043d21                e0
+ .bss           0x00043d22        0x1 ./src/kernel/drivers/serial.o
+                0x00043d22                is_serial_on
+ *fill*         0x00043d23        0x1 
+ .bss           0x00043d24        0xc ./src/kernel/include/memory/pmm.o
+                0x00043d24                memory_map
+                0x00043d28                max_blocks
+                0x00043d2c                used_blocks
 LOAD ./src/kernel/loader.o
 LOAD ./src/kernel/kernel.o
 LOAD ./src/kernel/include/libc/stdio.o
@@ -220,35 +221,35 @@ LOAD ./src/kernel/drivers/serial.o
 LOAD ./src/kernel/include/memory/pmm.o
 OUTPUT(./src/kernel/kernel.elf elf32-i386)
 
-.debug_info     0x00000000     0x2efb
- .debug_info    0x00000000      0x643 ./src/kernel/kernel.o
- .debug_info    0x00000643      0x7a2 ./src/kernel/include/libc/stdio.o
- .debug_info    0x00000de5      0x251 ./src/kernel/include/libc/string.o
- .debug_info    0x00001036      0x4b9 ./src/kernel/include/graphics.o
- .debug_info    0x000014ef      0x2d0 ./src/kernel/include/idt.o
- .debug_info    0x000017bf      0x15a ./src/kernel/include/io.o
- .debug_info    0x00001919      0x198 ./src/kernel/include/pic.o
- .debug_info    0x00001ab1      0x2ac ./src/kernel/include/pit.o
- .debug_info    0x00001d5d      0x340 ./src/kernel/include/rtc.o
- .debug_info    0x0000209d      0x220 ./src/kernel/drivers/ata.o
- .debug_info    0x000022bd      0x757 ./src/kernel/drivers/keyboard.o
- .debug_info    0x00002a14      0x140 ./src/kernel/drivers/serial.o
- .debug_info    0x00002b54      0x3a7 ./src/kernel/include/memory/pmm.o
+.debug_info     0x00000000     0x2f56
+ .debug_info    0x00000000      0x69e ./src/kernel/kernel.o
+ .debug_info    0x0000069e      0x7a2 ./src/kernel/include/libc/stdio.o
+ .debug_info    0x00000e40      0x251 ./src/kernel/include/libc/string.o
+ .debug_info    0x00001091      0x4b9 ./src/kernel/include/graphics.o
+ .debug_info    0x0000154a      0x2d0 ./src/kernel/include/idt.o
+ .debug_info    0x0000181a      0x15a ./src/kernel/include/io.o
+ .debug_info    0x00001974      0x198 ./src/kernel/include/pic.o
+ .debug_info    0x00001b0c      0x2ac ./src/kernel/include/pit.o
+ .debug_info    0x00001db8      0x340 ./src/kernel/include/rtc.o
+ .debug_info    0x000020f8      0x220 ./src/kernel/drivers/ata.o
+ .debug_info    0x00002318      0x757 ./src/kernel/drivers/keyboard.o
+ .debug_info    0x00002a6f      0x140 ./src/kernel/drivers/serial.o
+ .debug_info    0x00002baf      0x3a7 ./src/kernel/include/memory/pmm.o
 
-.debug_abbrev   0x00000000     0x11f9
- .debug_abbrev  0x00000000      0x299 ./src/kernel/kernel.o
- .debug_abbrev  0x00000299      0x1da ./src/kernel/include/libc/stdio.o
- .debug_abbrev  0x00000473       0xe6 ./src/kernel/include/libc/string.o
- .debug_abbrev  0x00000559      0x18e ./src/kernel/include/graphics.o
- .debug_abbrev  0x000006e7      0x172 ./src/kernel/include/idt.o
- .debug_abbrev  0x00000859       0xbd ./src/kernel/include/io.o
- .debug_abbrev  0x00000916       0xff ./src/kernel/include/pic.o
- .debug_abbrev  0x00000a15      0x13b ./src/kernel/include/pit.o
- .debug_abbrev  0x00000b50      0x176 ./src/kernel/include/rtc.o
- .debug_abbrev  0x00000cc6      0x10b ./src/kernel/drivers/ata.o
- .debug_abbrev  0x00000dd1      0x1c8 ./src/kernel/drivers/keyboard.o
- .debug_abbrev  0x00000f99       0xed ./src/kernel/drivers/serial.o
- .debug_abbrev  0x00001086      0x173 ./src/kernel/include/memory/pmm.o
+.debug_abbrev   0x00000000     0x11fa
+ .debug_abbrev  0x00000000      0x29a ./src/kernel/kernel.o
+ .debug_abbrev  0x0000029a      0x1da ./src/kernel/include/libc/stdio.o
+ .debug_abbrev  0x00000474       0xe6 ./src/kernel/include/libc/string.o
+ .debug_abbrev  0x0000055a      0x18e ./src/kernel/include/graphics.o
+ .debug_abbrev  0x000006e8      0x172 ./src/kernel/include/idt.o
+ .debug_abbrev  0x0000085a       0xbd ./src/kernel/include/io.o
+ .debug_abbrev  0x00000917       0xff ./src/kernel/include/pic.o
+ .debug_abbrev  0x00000a16      0x13b ./src/kernel/include/pit.o
+ .debug_abbrev  0x00000b51      0x176 ./src/kernel/include/rtc.o
+ .debug_abbrev  0x00000cc7      0x10b ./src/kernel/drivers/ata.o
+ .debug_abbrev  0x00000dd2      0x1c8 ./src/kernel/drivers/keyboard.o
+ .debug_abbrev  0x00000f9a       0xed ./src/kernel/drivers/serial.o
+ .debug_abbrev  0x00001087      0x173 ./src/kernel/include/memory/pmm.o
 
 .debug_aranges  0x00000000      0x1a0
  .debug_aranges
@@ -278,20 +279,20 @@ OUTPUT(./src/kernel/kernel.elf elf32-i386)
  .debug_aranges
                 0x00000180       0x20 ./src/kernel/include/memory/pmm.o
 
-.debug_line     0x00000000     0x17af
- .debug_line    0x00000000      0x203 ./src/kernel/kernel.o
- .debug_line    0x00000203      0x418 ./src/kernel/include/libc/stdio.o
- .debug_line    0x0000061b      0x16d ./src/kernel/include/libc/string.o
- .debug_line    0x00000788      0x26a ./src/kernel/include/graphics.o
- .debug_line    0x000009f2      0x10d ./src/kernel/include/idt.o
- .debug_line    0x00000aff       0x84 ./src/kernel/include/io.o
- .debug_line    0x00000b83       0xdf ./src/kernel/include/pic.o
- .debug_line    0x00000c62      0x11c ./src/kernel/include/pit.o
- .debug_line    0x00000d7e      0x28f ./src/kernel/include/rtc.o
- .debug_line    0x0000100d      0x1bb ./src/kernel/drivers/ata.o
- .debug_line    0x000011c8      0x2d3 ./src/kernel/drivers/keyboard.o
- .debug_line    0x0000149b       0xd2 ./src/kernel/drivers/serial.o
- .debug_line    0x0000156d      0x242 ./src/kernel/include/memory/pmm.o
+.debug_line     0x00000000     0x17f3
+ .debug_line    0x00000000      0x247 ./src/kernel/kernel.o
+ .debug_line    0x00000247      0x418 ./src/kernel/include/libc/stdio.o
+ .debug_line    0x0000065f      0x16d ./src/kernel/include/libc/string.o
+ .debug_line    0x000007cc      0x26a ./src/kernel/include/graphics.o
+ .debug_line    0x00000a36      0x10d ./src/kernel/include/idt.o
+ .debug_line    0x00000b43       0x84 ./src/kernel/include/io.o
+ .debug_line    0x00000bc7       0xdf ./src/kernel/include/pic.o
+ .debug_line    0x00000ca6      0x11c ./src/kernel/include/pit.o
+ .debug_line    0x00000dc2      0x28f ./src/kernel/include/rtc.o
+ .debug_line    0x00001051      0x1bb ./src/kernel/drivers/ata.o
+ .debug_line    0x0000120c      0x2d3 ./src/kernel/drivers/keyboard.o
+ .debug_line    0x000014df       0xd2 ./src/kernel/drivers/serial.o
+ .debug_line    0x000015b1      0x242 ./src/kernel/include/memory/pmm.o
 
 .debug_str      0x00000000     0x1096
  .debug_str     0x00000000     0x1096 ./src/kernel/kernel.o
@@ -310,34 +311,34 @@ OUTPUT(./src/kernel/kernel.elf elf32-i386)
  .debug_str     0x00001096      0x223 ./src/kernel/include/memory/pmm.o
 
 .debug_line_str
-                0x00000000      0x54f
+                0x00000000      0x50e
  .debug_line_str
-                0x00000000      0x54f ./src/kernel/kernel.o
-                                0x258 (size before relaxing)
+                0x00000000      0x50e ./src/kernel/kernel.o
+                                0x1fe (size before relaxing)
  .debug_line_str
-                0x0000054f      0x1b1 ./src/kernel/include/libc/stdio.o
+                0x0000050e      0x1b1 ./src/kernel/include/libc/stdio.o
  .debug_line_str
-                0x0000054f       0xb4 ./src/kernel/include/libc/string.o
+                0x0000050e       0xb4 ./src/kernel/include/libc/string.o
  .debug_line_str
-                0x0000054f       0xd9 ./src/kernel/include/graphics.o
+                0x0000050e       0xd9 ./src/kernel/include/graphics.o
  .debug_line_str
-                0x0000054f       0xa5 ./src/kernel/include/idt.o
+                0x0000050e       0xa5 ./src/kernel/include/idt.o
  .debug_line_str
-                0x0000054f       0x9c ./src/kernel/include/io.o
+                0x0000050e       0x9c ./src/kernel/include/io.o
  .debug_line_str
-                0x0000054f       0xbb ./src/kernel/include/pic.o
+                0x0000050e       0xbb ./src/kernel/include/pic.o
  .debug_line_str
-                0x0000054f      0x106 ./src/kernel/include/pit.o
+                0x0000050e      0x106 ./src/kernel/include/pit.o
  .debug_line_str
-                0x0000054f      0x107 ./src/kernel/include/rtc.o
+                0x0000050e      0x107 ./src/kernel/include/rtc.o
  .debug_line_str
-                0x0000054f       0xd5 ./src/kernel/drivers/ata.o
+                0x0000050e       0xd5 ./src/kernel/drivers/ata.o
  .debug_line_str
-                0x0000054f      0x16b ./src/kernel/drivers/keyboard.o
+                0x0000050e      0x16b ./src/kernel/drivers/keyboard.o
  .debug_line_str
-                0x0000054f       0xd6 ./src/kernel/drivers/serial.o
+                0x0000050e       0xd6 ./src/kernel/drivers/serial.o
  .debug_line_str
-                0x0000054f       0xc6 ./src/kernel/include/memory/pmm.o
+                0x0000050e       0xc6 ./src/kernel/include/memory/pmm.o
 
 .comment        0x00000000       0x12
  .comment       0x00000000       0x12 ./src/kernel/kernel.o
@@ -355,17 +356,17 @@ OUTPUT(./src/kernel/kernel.elf elf32-i386)
  .comment       0x00000012       0x13 ./src/kernel/drivers/serial.o
  .comment       0x00000012       0x13 ./src/kernel/include/memory/pmm.o
 
-.debug_frame    0x00000000      0xd28
- .debug_frame   0x00000000      0x16c ./src/kernel/kernel.o
- .debug_frame   0x0000016c      0x2b4 ./src/kernel/include/libc/stdio.o
- .debug_frame   0x00000420       0xe0 ./src/kernel/include/libc/string.o
- .debug_frame   0x00000500      0x180 ./src/kernel/include/graphics.o
- .debug_frame   0x00000680       0xc4 ./src/kernel/include/idt.o
- .debug_frame   0x00000744       0xb4 ./src/kernel/include/io.o
- .debug_frame   0x000007f8       0xbc ./src/kernel/include/pic.o
- .debug_frame   0x000008b4       0xe0 ./src/kernel/include/pit.o
- .debug_frame   0x00000994       0xe0 ./src/kernel/include/rtc.o
- .debug_frame   0x00000a74       0x58 ./src/kernel/drivers/ata.o
- .debug_frame   0x00000acc       0x80 ./src/kernel/drivers/keyboard.o
- .debug_frame   0x00000b4c       0x94 ./src/kernel/drivers/serial.o
- .debug_frame   0x00000be0      0x148 ./src/kernel/include/memory/pmm.o
+.debug_frame    0x00000000      0xd48
+ .debug_frame   0x00000000      0x18c ./src/kernel/kernel.o
+ .debug_frame   0x0000018c      0x2b4 ./src/kernel/include/libc/stdio.o
+ .debug_frame   0x00000440       0xe0 ./src/kernel/include/libc/string.o
+ .debug_frame   0x00000520      0x180 ./src/kernel/include/graphics.o
+ .debug_frame   0x000006a0       0xc4 ./src/kernel/include/idt.o
+ .debug_frame   0x00000764       0xb4 ./src/kernel/include/io.o
+ .debug_frame   0x00000818       0xbc ./src/kernel/include/pic.o
+ .debug_frame   0x000008d4       0xe0 ./src/kernel/include/pit.o
+ .debug_frame   0x000009b4       0xe0 ./src/kernel/include/rtc.o
+ .debug_frame   0x00000a94       0x58 ./src/kernel/drivers/ata.o
+ .debug_frame   0x00000aec       0x80 ./src/kernel/drivers/keyboard.o
+ .debug_frame   0x00000b6c       0x94 ./src/kernel/drivers/serial.o
+ .debug_frame   0x00000c00      0x148 ./src/kernel/include/memory/pmm.o

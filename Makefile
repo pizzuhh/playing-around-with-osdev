@@ -44,7 +44,8 @@ $(DISK_FILE): $(BOOT_BIN) $(KERNEL_BIN)
 	@echo "Generating disk.img file..."
 	@dd if=/dev/zero of=$@ bs=512 count=2880
 	@dd if=./src/boot/boot.bin of=$@ bs=512 conv=notrunc
-	@dd if=$(KERNEL_BIN) of=$@ bs=512 conv=notrunc seek=1
+	@dd if=./src/boot/stage2.bin of=$@ bs=512 conv=notrunc seek=1
+	@dd if=$(KERNEL_BIN) of=$@ bs=512 conv=notrunc seek=2
 	@size=$$(wc -c < $(KERNEL_BIN));\
 	SECTORS=$$(((size + 511) / 512));\
 	echo "$@" "0x$$(printf '%X' $$SECTORS)"

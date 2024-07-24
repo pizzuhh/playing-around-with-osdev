@@ -1,3 +1,4 @@
+#include "include/graphics.h"
 #include "krn.h"
 
 uint8_t graphics_mode = 0;
@@ -70,6 +71,14 @@ void print_memory(bool print_detected) {
     default_color[1] = tmp;
 }
 
+void aaa(int a, char c) {
+    for (int i = a; i > 0; i--) {
+        for(int j = i; j > 0; j--) {
+            printk("%c", c);
+        }
+        printk("\n");
+    }
+}
 
 #if 1
 void _kstart() {
@@ -91,6 +100,8 @@ void _kstart() {
             free_blocks(str, 3);
             printk("Freed\n");
             print_memory(0);
+        } else if (!strcmp(in, "test")) {
+            aaa(24, 'x');
         }
     }
 }
