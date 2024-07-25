@@ -46,6 +46,7 @@ $(DISK_FILE): $(BOOT_BIN) $(KERNEL_BIN)
 	@dd if=./src/boot/boot.bin of=$@ bs=512 conv=notrunc
 	@dd if=./src/boot/stage2.bin of=$@ bs=512 conv=notrunc seek=1
 	@dd if=$(KERNEL_BIN) of=$@ bs=512 conv=notrunc seek=2
+	#@dd if=./test.vga of=$@ bs=512 conv=notrunc seek=69
 	@size=$$(wc -c < $(KERNEL_BIN));\
 	SECTORS=$$(((size + 511) / 512));\
 	echo "$@" "0x$$(printf '%X' $$SECTORS)"

@@ -1,6 +1,8 @@
 #include "include/graphics.h"
 #include "krn.h"
 
+#define NULL (void*)0
+
 uint8_t graphics_mode = 0;
 __attribute__((interrupt)) void dbg(interrupt_frame *frame) {
     prints("Debug Interrupt called!\nPres any key to continue...\n");
@@ -102,6 +104,23 @@ void _kstart() {
             print_memory(0);
         } else if (!strcmp(in, "test")) {
             aaa(24, 'x');
+        } else if (!strcmp(in, "draw")) { // Read 125 sectros from LBA 69 
+            uint16_t *picture = alloc_blocks(16);
+            // uint16_t data[2] = {0x0F00, 0x0F0C};
+            // memcpy(picture, data, sizeof(data));
+            // ata_write_sector(69, 5, picture);
+            // memcpy(picture, 0x00, 5*4096); testing code
+            ata_read_sector(69, 125, picture);
+            uint16_t *original_picture = picture;
+            for (int y = 0; y < HEIGHT; ++y) {
+                for (int x = 0; x < WIDTH; x += 2) { // += since uint16_t contains 2 pixels 
+                    putpixel(x, y, *(picture) >> 8); // higher 8 bits
+                    putpixel(x + 1, y, *(picture) & 0xFF); // lower 8 bits
+                    picture++;
+                }
+            }
+            free_blocks(original_picture, 16);
+            picture = NULL;
         }
     }
 }
